@@ -1,4 +1,4 @@
-Interested in Machine Learning, Data Science, Artificial intelligence(AI) and Python backend development.
+Interested in Machine Learning, Data Science, Artificial intelligence and Python backend development.
 
 **Currently working on:** Deepening LLM knowledge.
 - **[LinkedIn](https://linkedin.com/in/16a9da)**
