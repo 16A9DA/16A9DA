@@ -4,4 +4,4 @@ Interested in Machine Learning, Data Science, Artificial intelligence and Python
 - **[LinkedIn](https://linkedin.com/in/16a9da)**
 - **[Portfolio](https://me-ob0p.onrender.com/)**
 - **[Discord](https://discordapp.com/users/584487184141254731)**
-- **[Fiverr](https://www.fiverr.com/rayyan_tanweer/buying?source=avatar_menu_profile)**
+- **[Fiverr](https://www.fiverr.com/rayyan_tanweer)**
