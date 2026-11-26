@@ -178,8 +178,8 @@ links = []
 links = {}
 for name, text, fill, url in BTNS:
     icon = name == "play"
-    w, h = (78, 52) if icon else (len(text) * 8 + 26, 30)
-    body = (f'<g transform="translate({(w - 24) / 2},{(h - 24) / 2})">{ICONS[name].replace("FILL", fill)}</g>' if icon else
+    w, h = (178, 52) if icon else (len(text) * 8 + 26, 30)
+    body = (f'<g transform="translate(20,{(h - 24) / 2})">{ICONS[name]}</g><text x="{w / 2 + 18}" y="{h / 2 + 6}" text-anchor="middle" fill="#1A1A1A" style="font:800 18px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text>' if icon else
             f'<text x="{w / 2}" y="{h / 2 + 4}" text-anchor="middle" fill="#1A1A1A" style="font:800 12px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text>')
     (out / f"{name}.svg").write_text(
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 5}" height="{h + 5}" viewBox="0 0 {w + 5} {h + 5}" role="img" aria-label="{e(text)}">'
