@@ -150,23 +150,10 @@ Path(__file__).with_name("mario-run.svg").write_text(svg, encoding="utf-8")
 print(N, "stages", commits, "commits", repos, "repos", len(svg), "bytes")
 
 # ---- clickable retro social buttons (GitHub can't click inside an <img> SVG) + README ----
-C = "#F2EDD7"
-def px(rects):  # pixel glyph from (x, y, w, h) on a 5x5 grid of 4px cells
-    return "".join(f'<rect x="{x * 4}" y="{y * 4}" width="{w * 4}" height="{h * 4}" fill="{C}"/>' for x, y, w, h in rects)
-T = 'fill="%s" text-anchor="middle" style="font:800 %dpx ui-monospace,Menlo,Consolas,monospace"'
-ICONS = {  # 20x20 glyphs on the dark tile
- "linkedin": f'<text x="10" y="16" {T % (C, 19)}>in</text>',
- "email": f'<text x="10" y="17" {T % (C, 21)}>@</text>',
- "discord": (f'<rect x="0" y="5" width="20" height="11" fill="{C}"/><rect x="2" y="3" width="16" height="2" fill="{C}"/>'
-             '<rect x="3" y="9" width="5" height="2" fill="#1A1A1A"/><rect x="4.5" y="7.5" width="2" height="5" fill="#1A1A1A"/>'
-             '<rect x="12" y="8" width="2.5" height="2.5" fill="#1A1A1A"/><rect x="15.5" y="10.5" width="2.5" height="2.5" fill="#1A1A1A"/>'),
- "play": f'<text x="10" y="16" {T % (C, 17)}>▶</text>',
- "github": f'<text x="10" y="16" {T % (C, 15)}>&gt;_</text>',
-}
 GH = "https://github.com/16A9DA"
 PAGES = "https://16a9da.github.io/16A9DA/"
 BTNS = [  # file, text, fill, url
- ("play", "PLAY", "#E8857A", PAGES),
+ ("play", "PLAY GAME", "#E8857A", PAGES),
  ("linkedin", "LinkedIn", "#F5D87A", "https://linkedin.com/in/16a9da"),
  ("email", "Email", "#E8857A", "mailto:rayyan.tanweer@gmail.com"),
  ("discord", "Discord", "#F2EDD7", "https://discordapp.com/users/584487184141254731"),
@@ -178,15 +165,13 @@ for old in out.glob("*.svg"):
     old.unlink()
 links = []
 for name, text, fill, url in BTNS:
-    w, h = 148, 42
+    w, h = max(120, len(text) * 10 + 36), 42
     (out / f"{name}.svg").write_text(
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 5}" height="{h + 5}" viewBox="0 0 {w + 5} {h + 5}" role="img" aria-label="{e(text)}">'
         f'<rect x="5" y="5" width="{w}" height="{h}" fill="#1A1A1A"/>'
         f'<rect x="1.5" y="1.5" width="{w - 3}" height="{h - 3}" fill="{fill}" stroke="#1A1A1A" stroke-width="3"/>'
-        f'<rect x="3" y="3" width="{h - 6}" height="{h - 6}" fill="#1A1A1A"/>'
-        f'<g transform="translate({3 + (h - 6 - 20) / 2},{3 + (h - 6 - 20) / 2})">{ICONS[name]}</g>'
-        f'<text x="{h + (w - h) / 2}" y="{h / 2 + 5}" text-anchor="middle" fill="#1A1A1A" '
-        f'style="font:800 14px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text></svg>\n', encoding="utf-8")
+        f'<text x="{w / 2}" y="{h / 2 + 5}" text-anchor="middle" fill="#1A1A1A" '
+        f'style="font:800 15px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text></svg>\n', encoding="utf-8")
     links.append(f'<a href="{url}"><img src="./btn/{name}.svg" alt="{e(text)}" height="47" /></a>')
 Path(__file__).with_name("README.md").write_text(
     '<div align="center">\n\n'
@@ -207,14 +192,16 @@ GAME = r"""<!doctype html>
 :root{--ink:#1A1A1A;--cream:#F2EDD7;--yel:#F5D87A;--pink:#E8857A;--sky:#6ECFCF}
 *{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--cream);font-family:ui-monospace,Menlo,Consolas,monospace}
 body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:12px;touch-action:manipulation}
-#wrap{width:min(100%,960px)}canvas{display:block;width:100%;image-rendering:pixelated;border:3px solid var(--cream);background:var(--sky)}
+h1{margin:0;font-size:clamp(20px,3.2vw,34px);letter-spacing:.12em;color:var(--yel);text-shadow:3px 3px 0 var(--pink)}#sub{margin:0;font-size:clamp(11px,1.4vw,15px);opacity:.85;text-align:center}
+#wrap{width:640px}canvas{display:block;width:100%;height:auto;border:4px solid var(--cream);box-shadow:8px 8px 0 #000;background:var(--sky)}
 .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
-a.b,button{font:800 14px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--yel);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--cream);padding:10px 16px;text-decoration:none;cursor:pointer;user-select:none;-webkit-user-select:none}
+a.b,button{font:800 14px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--yel);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--cream);padding:12px 22px;text-decoration:none;cursor:pointer;user-select:none;-webkit-user-select:none}
 a.b:active,button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--cream)}
 a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)}
 #pad{display:none;gap:14px}@media (pointer:coarse){#pad{display:flex}}#pad button{font-size:22px;padding:14px 26px}
 #hint{font-size:12px;opacity:.75;text-align:center}#open{display:none}
 </style></head><body>
+<h1>RAYYAN AHMED</h1><p id="sub">Agentic AI Intern @ BMW · CS @ University of Debrecen</p>
 <div id="wrap"><canvas id="c" width="640" height="250"></canvas></div>
 <div id="hint">← → move · ↑ / SPACE jump · bump the ★ and ? blocks from below · reach the flag</div>
 <div class="row" id="pad"><button id="L">◀</button><button id="J">▲</button><button id="R">▶</button></div>
@@ -230,7 +217,11 @@ const W=640,GY=150,SP=96,COL=S.map((_,i)=>44+i*SP),WORLD=COL[COL.length-1]+120,N
 const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
 const SPR=%SPRITE%,PAL=%PALETTE%;
 const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
-const keys={};let st;
+const keys={};let st,K=1;
+function fit(){const hh=document.querySelector('h1').offsetHeight+document.getElementById('sub').offsetHeight+document.getElementById('hint').offsetHeight+(innerWidth<700?150:90)+60;
+ const w=Math.max(320,Math.min(innerWidth-28,1040,(innerHeight-hh)*W/250));document.getElementById('wrap').style.width=w+'px';
+ const d=Math.min(devicePixelRatio||1,3);K=w*d/W;cv.width=Math.round(W*K);cv.height=Math.round(250*K);g.setTransform(K,0,0,K,0,0);g.imageSmoothingEnabled=false}
+addEventListener('resize',fit);
 function reset(){st={x:COL[0],y:GY,vy:0,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
 reset();
 addEventListener('keydown',e=>{const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys[k.toLowerCase()]=1;if(st.won&&(k==='Enter'||k===' '))reset()});
@@ -241,7 +232,7 @@ for(const [id,k] of [['L','arrowleft'],['R','arrowright'],['J','arrowup']]){cons
 cv.addEventListener('pointerdown',()=>{if(st.won)reset()});
 const open=document.getElementById('open');
 function setCur(i){if(st.cur===i&&open.href)return;st.cur=i;const u=S[i].url;if(u){open.style.display='';open.href=u;open.textContent=(S[i].kind==='repo'||S[i].kind==='pipe'?'OPEN '+S[i].title.toUpperCase():'VISIT')+' ↗'}else open.style.display='none'}
-setCur(0);
+setCur(0);fit();
 function trigger(i){if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:70,t:0})}setCur(i)}
 let last=performance.now();
 function step(dt){
@@ -259,7 +250,7 @@ function step(dt){
 function box(x,y,w,h,f){g.fillStyle=INK;g.fillRect(x+3,y+3,w,h);g.fillStyle=f;g.fillRect(x,y,w,h);g.strokeStyle=INK;g.lineWidth=2.5;g.strokeRect(x,y,w,h)}
 function txt(s,x,y,sz,al,mono=true,c=INK){g.fillStyle=c;g.textAlign=al;g.font=(mono?'800 ':'600 ')+sz+'px '+(mono?'ui-monospace,Menlo,Consolas,monospace':'-apple-system,Segoe UI,Helvetica,Arial,sans-serif');g.fillText(s,x,y)}
 function draw(){
- g.fillStyle=SKY;g.fillRect(0,0,W,250);
+ g.setTransform(K,0,0,K,0,0);g.fillStyle=SKY;g.fillRect(0,0,W,250);
  const cam=Math.min(Math.max(st.x-190,0),WORLD-W);
  g.save();g.beginPath();g.rect(0,0,W,GY+22);g.clip();g.translate(-cam,0);
  for(let x=120;x<WORLD+400;x+=310){g.fillStyle=CREAM;g.strokeStyle=INK;g.lineWidth=2;g.fillRect(x,48,42,10);g.strokeRect(x,48,42,10);g.fillRect(x+10,42,22,8);g.strokeRect(x+10,42,22,8)}

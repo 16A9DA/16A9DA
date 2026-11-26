@@ -5,14 +5,16 @@
 :root{--ink:#1A1A1A;--cream:#F2EDD7;--yel:#F5D87A;--pink:#E8857A;--sky:#6ECFCF}
 *{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--cream);font-family:ui-monospace,Menlo,Consolas,monospace}
 body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:12px;touch-action:manipulation}
-#wrap{width:min(100%,960px)}canvas{display:block;width:100%;image-rendering:pixelated;border:3px solid var(--cream);background:var(--sky)}
+h1{margin:0;font-size:clamp(20px,3.2vw,34px);letter-spacing:.12em;color:var(--yel);text-shadow:3px 3px 0 var(--pink)}#sub{margin:0;font-size:clamp(11px,1.4vw,15px);opacity:.85;text-align:center}
+#wrap{width:640px}canvas{display:block;width:100%;height:auto;border:4px solid var(--cream);box-shadow:8px 8px 0 #000;background:var(--sky)}
 .row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
-a.b,button{font:800 14px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--yel);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--cream);padding:10px 16px;text-decoration:none;cursor:pointer;user-select:none;-webkit-user-select:none}
+a.b,button{font:800 14px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--yel);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--cream);padding:12px 22px;text-decoration:none;cursor:pointer;user-select:none;-webkit-user-select:none}
 a.b:active,button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--cream)}
 a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)}
 #pad{display:none;gap:14px}@media (pointer:coarse){#pad{display:flex}}#pad button{font-size:22px;padding:14px 26px}
 #hint{font-size:12px;opacity:.75;text-align:center}#open{display:none}
 </style></head><body>
+<h1>RAYYAN AHMED</h1><p id="sub">Agentic AI Intern @ BMW · CS @ University of Debrecen</p>
 <div id="wrap"><canvas id="c" width="640" height="250"></canvas></div>
 <div id="hint">← → move · ↑ / SPACE jump · bump the ★ and ? blocks from below · reach the flag</div>
 <div class="row" id="pad"><button id="L">◀</button><button id="J">▲</button><button id="R">▶</button></div>
@@ -28,7 +30,11 @@ const W=640,GY=150,SP=96,COL=S.map((_,i)=>44+i*SP),WORLD=COL[COL.length-1]+120,N
 const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
 const SPR=["...RRRRR....", "..RRRRRRRRR.", "..BBBSSBS...", ".BSBSSSBSSS.", ".BSBBSSSBSSS", ".BBSSSSBBBB.", "...SSSSSSS..", "..RRCRRR....", ".RRRCRRRCR..", "RRRRCCCCRRRR", "SSRCYSYCRSS.", "SSSCCCCCCSSS", "..CCC..CCC..", ".BBBB..BBBB."],PAL={"R": "#E8857A", "S": "#F5D87A", "Y": "#F5D87A", "B": "#1A1A1A", "C": "#F2EDD7"};
 const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
-const keys={};let st;
+const keys={};let st,K=1;
+function fit(){const hh=document.querySelector('h1').offsetHeight+document.getElementById('sub').offsetHeight+document.getElementById('hint').offsetHeight+(innerWidth<700?150:90)+60;
+ const w=Math.max(320,Math.min(innerWidth-28,1040,(innerHeight-hh)*W/250));document.getElementById('wrap').style.width=w+'px';
+ const d=Math.min(devicePixelRatio||1,3);K=w*d/W;cv.width=Math.round(W*K);cv.height=Math.round(250*K);g.setTransform(K,0,0,K,0,0);g.imageSmoothingEnabled=false}
+addEventListener('resize',fit);
 function reset(){st={x:COL[0],y:GY,vy:0,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
 reset();
 addEventListener('keydown',e=>{const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys[k.toLowerCase()]=1;if(st.won&&(k==='Enter'||k===' '))reset()});
@@ -39,7 +45,7 @@ for(const [id,k] of [['L','arrowleft'],['R','arrowright'],['J','arrowup']]){cons
 cv.addEventListener('pointerdown',()=>{if(st.won)reset()});
 const open=document.getElementById('open');
 function setCur(i){if(st.cur===i&&open.href)return;st.cur=i;const u=S[i].url;if(u){open.style.display='';open.href=u;open.textContent=(S[i].kind==='repo'||S[i].kind==='pipe'?'OPEN '+S[i].title.toUpperCase():'VISIT')+' ↗'}else open.style.display='none'}
-setCur(0);
+setCur(0);fit();
 function trigger(i){if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:70,t:0})}setCur(i)}
 let last=performance.now();
 function step(dt){
@@ -57,7 +63,7 @@ function step(dt){
 function box(x,y,w,h,f){g.fillStyle=INK;g.fillRect(x+3,y+3,w,h);g.fillStyle=f;g.fillRect(x,y,w,h);g.strokeStyle=INK;g.lineWidth=2.5;g.strokeRect(x,y,w,h)}
 function txt(s,x,y,sz,al,mono=true,c=INK){g.fillStyle=c;g.textAlign=al;g.font=(mono?'800 ':'600 ')+sz+'px '+(mono?'ui-monospace,Menlo,Consolas,monospace':'-apple-system,Segoe UI,Helvetica,Arial,sans-serif');g.fillText(s,x,y)}
 function draw(){
- g.fillStyle=SKY;g.fillRect(0,0,W,250);
+ g.setTransform(K,0,0,K,0,0);g.fillStyle=SKY;g.fillRect(0,0,W,250);
  const cam=Math.min(Math.max(st.x-190,0),WORLD-W);
  g.save();g.beginPath();g.rect(0,0,W,GY+22);g.clip();g.translate(-cam,0);
  for(let x=120;x<WORLD+400;x+=310){g.fillStyle=CREAM;g.strokeStyle=INK;g.lineWidth=2;g.fillRect(x,48,42,10);g.strokeRect(x,48,42,10);g.fillRect(x+10,42,22,8);g.strokeRect(x+10,42,22,8)}
