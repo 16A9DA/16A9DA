@@ -158,6 +158,7 @@ ICONS = {  # 24x24 glyphs on a dark tile
  "discord": (f'<rect x="0" y="6" width="24" height="13" fill="{C}"/><rect x="2" y="3" width="20" height="3" fill="{C}"/>'
              '<rect x="3.5" y="11" width="6" height="2.4" fill="FILL"/><rect x="5.3" y="9.2" width="2.4" height="6" fill="FILL"/>'
              '<rect x="14" y="10" width="3" height="3" fill="FILL"/><rect x="18" y="13" width="3" height="3" fill="FILL"/>'),
+ "play": '<polygon points="5,1 23,12 5,23" fill="#1A1A1A"/>',
  "github": f'<text x="12" y="18" {T % (C, 17)}>&gt;_</text>',
 }
 GH = "https://github.com/16A9DA"
@@ -176,10 +177,10 @@ for old in out.glob("*.svg"):
 links = []
 links = {}
 for name, text, fill, url in BTNS:
-    icon = name in ICONS
-    w, h = (58, 50) if icon else (max(120, len(text) * 10 + 36), 50)
+    icon = name == "play"
+    w, h = (78, 52) if icon else (len(text) * 8 + 26, 30)
     body = (f'<g transform="translate({(w - 24) / 2},{(h - 24) / 2})">{ICONS[name].replace("FILL", fill)}</g>' if icon else
-            f'<text x="{w / 2}" y="{h / 2 + 6}" text-anchor="middle" fill="#1A1A1A" style="font:800 17px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text>')
+            f'<text x="{w / 2}" y="{h / 2 + 4}" text-anchor="middle" fill="#1A1A1A" style="font:800 12px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text>')
     (out / f"{name}.svg").write_text(
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 5}" height="{h + 5}" viewBox="0 0 {w + 5} {h + 5}" role="img" aria-label="{e(text)}">'
         f'<rect x="5" y="5" width="{w}" height="{h}" fill="#1A1A1A"/>'
