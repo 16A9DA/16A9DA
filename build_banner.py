@@ -218,7 +218,7 @@ a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)
 </style></head><body>
 <h1>RAYYAN AHMED</h1><p id="sub">Agentic AI Intern @ BMW · CS @ University of Debrecen</p>
 <div id="wrap"><canvas id="c" width="640" height="250"></canvas></div>
-<div id="hint">← → move · ↑ / SPACE jump · land on or bump the ★ and ? blocks, hop from block to block · reach the flag</div>
+<div id="hint">← → move · ↑ / SPACE jump · hop from block to block · mind the pits, small stones help · reach the flag</div>
 <div class="row" id="pad"><button id="L">◀</button><button id="J">▲</button><button id="R">▶</button></div>
 <div class="row"><a class="b" id="open" target="_blank" rel="noopener">OPEN ↗</a>
 <a class="b" href="https://linkedin.com/in/16a9da" target="_blank" rel="noopener">LinkedIn</a>
@@ -228,18 +228,22 @@ a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)
 <script>
 const S=__DATA__;
 const cv=document.getElementById('c'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
-const W=640,GY=150,SP=96,COL=S.map((_,i)=>44+i*SP),WORLD=COL[COL.length-1]+120,N=S.length;
+const W=640,GY=150,SP=130,PITAFTER=[1,3,5,7],COL=S.map((_,i)=>44+i*SP+50*PITAFTER.filter(k=>k<i).length),WORLD=COL[COL.length-1]+120,N=S.length;
 const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
 const SPR=%SPRITE%,PAL=%PALETTE%;
 const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
 const BLK=[];{let k=0;S.forEach((s,i)=>{if(s.kind==='repo'||s.kind==='mile'){BLK.push({i,cx:COL[i],w:s.kind==='mile'?40:30,top:k%2?62:78});k++}})}
 const BH=28,PW=9,PH=42;
+const PITS=PITAFTER.map(i=>({x0:COL[i]+40,x1:COL[i+1]-50,cx:(COL[i]+COL[i+1])/2}));
+const STONES=PITS.map(p=>({cx:p.cx,w:16,top:126}));
+const inPit=x=>PITS.some(p=>x>p.x0&&x<p.x1);
+const MSG=[["Missed it. Every big project started small.","Grab a small win and climb back up."],["Failed a project? That's a draft, not the end.","Ship something small, then go again."],["Falling is part of the run.","The small stones got you here before."],["You've rebuilt from small wins before.","Do it again, one hop at a time."]];
 const keys={};let st,K=1;
 function fit(){const hh=document.querySelector('h1').offsetHeight+document.getElementById('sub').offsetHeight+document.getElementById('hint').offsetHeight+(innerWidth<700?150:90)+60;
  const w=Math.max(320,Math.min(innerWidth-28,1040,(innerHeight-hh)*W/250));document.getElementById('wrap').style.width=w+'px';
  const d=Math.min(devicePixelRatio||1,3);K=w*d/W;cv.width=Math.round(W*K);cv.height=Math.round(250*K);g.setTransform(K,0,0,K,0,0);g.imageSmoothingEnabled=false}
 addEventListener('resize',fit);
-function reset(){st={x:COL[0],y:GY,vy:0,gr:true,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
+function reset(){st={x:COL[0],y:GY,vy:0,gr:true,ck:0,falls:0,msgT:0,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
 reset();
 addEventListener('keydown',e=>{const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys[k.toLowerCase()]=1;if(st.won&&(k==='Enter'||k===' '))reset()});
 addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=0});
@@ -250,9 +254,10 @@ cv.addEventListener('pointerdown',()=>{if(st.won)reset()});
 const open=document.getElementById('open');
 function setCur(i){if(st.cur===i&&open.href)return;st.cur=i;const u=S[i].url;if(u){open.style.display='';open.href=u;open.textContent=(S[i].kind==='repo'||S[i].kind==='pipe'?'OPEN '+S[i].title.toUpperCase():'VISIT')+' ↗'}else open.style.display='none'}
 setCur(0);fit();
-function trigger(i){if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:(BLK.find(b=>b.i===i)||{top:70}).top-8,t:0})}setCur(i)}
+function trigger(i){st.ck=i;if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:(BLK.find(b=>b.i===i)||{top:70}).top-8,t:0})}setCur(i)}
 let last=performance.now();
 function step(dt){
+ if(st.msgT>0){st.msgT-=dt;if(st.msgT<=0){let ck=st.ck;while(ck>0&&!(S[ck].kind==='repo'||S[ck].kind==='mile'||S[ck].kind==='start'))ck--;st.x=COL[ck];st.y=GY;st.vy=0;st.gr=true;setCur(ck)}return}
  const L=keys.arrowleft||keys.a,R=keys.arrowright||keys.d,J=keys.arrowup||keys.w||keys[' '];
  const v=(R?1:0)-(L?1:0),px0=st.x;st.x=Math.min(Math.max(st.x+v*175*dt,20),WORLD-40);if(v)st.face=v;
  // sideways: blocks are solid
@@ -262,7 +267,9 @@ function step(dt){
  for(const b of BLK){const bot=b.top+BH;if(Math.abs(st.x-b.cx)>=b.w/2+PW-1)continue;
   if(st.vy>=0&&py<=b.top+.5&&st.y>=b.top){st.y=b.top;st.vy=0;st.gr=true;trigger(b.i)}
   else if(st.vy<0&&py-PH>=bot-.5&&st.y-PH<bot){st.y=bot+PH;st.vy=40;st.bump[b.i]=.25;trigger(b.i)}}
- if(st.y>=GY){st.y=GY;st.vy=0;st.gr=true}
+ for(const o of STONES){if(Math.abs(st.x-o.cx)<o.w/2+PW&&st.vy>=0&&py<=o.top+.5&&st.y>=o.top){st.y=o.top;st.vy=0;st.gr=true}}
+ if(st.y>=GY&&!inPit(st.x)){st.y=GY;st.vy=0;st.gr=true}
+ if(st.y>GY+75){st.falls++;st.msgT=3.2;st.msg=MSG[(st.falls-1)%MSG.length]}
  S.forEach((s,i)=>{if(!(s.kind==='repo'||s.kind==='mile')&&Math.abs(st.x-COL[i])<26)trigger(i)});
  if(S[st.cur].kind==='flag'&&Math.abs(st.x-COL[N-1])<26)st.won=true;
  for(const k in st.bump){st.bump[k]-=dt;if(st.bump[k]<=0)delete st.bump[k]}
@@ -272,10 +279,13 @@ function txt(s,x,y,sz,al,mono=true,c=INK){g.fillStyle=c;g.textAlign=al;g.font=(m
 function draw(){
  g.setTransform(K,0,0,K,0,0);g.fillStyle=SKY;g.fillRect(0,0,W,250);
  const cam=Math.min(Math.max(st.x-190,0),WORLD-W);
- g.save();g.beginPath();g.rect(0,0,W,GY+22);g.clip();g.translate(-cam,0);
+ g.save();g.beginPath();g.rect(0,0,W,GY+30);g.clip();g.translate(-cam,0);
  for(let x=120;x<WORLD+400;x+=310){g.fillStyle=CREAM;g.strokeStyle=INK;g.lineWidth=2;g.fillRect(x,48,42,10);g.strokeRect(x,48,42,10);g.fillRect(x+10,42,22,8);g.strokeRect(x+10,42,22,8)}
- g.fillStyle=PINK;g.fillRect(cam-8,GY,W+16,22);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(cam-8,GY,W+16,22);
- g.lineWidth=2;g.globalAlpha=.35;for(let x=Math.floor(cam/40)*40;x<cam+W+40;x+=40){g.beginPath();g.moveTo(x+4,GY);g.lineTo(x+4,GY+22);g.stroke()}g.globalAlpha=1;
+ const segs=[];{let a=cam-8;for(const p of PITS){if(p.x1<a||p.x0>cam+W+8)continue;if(p.x0>a)segs.push([a,p.x0]);a=p.x1}segs.push([a,cam+W+8])}
+ for(const [a,b] of segs){g.fillStyle=PINK;g.fillRect(a,GY,b-a,22);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(a,GY,b-a,22);
+  g.lineWidth=2;g.globalAlpha=.35;for(let x=Math.ceil(a/40)*40;x<b;x+=40){g.beginPath();g.moveTo(x+4,GY);g.lineTo(x+4,GY+22);g.stroke()}g.globalAlpha=1}
+ for(const p of PITS){g.fillStyle=INK;g.fillRect(p.x0,GY+3,p.x1-p.x0,22)}
+ for(const o of STONES){box(o.cx-o.w/2,o.top,o.w,12,YEL);txt('small win',o.cx,o.top-5,7.5,'center')}
  S.forEach((s,i)=>{const cx=COL[i],hit=st.hit.has(i);
   if(s.kind==='repo'||s.kind==='mile'){const B=BLK.find(b=>b.i===i),w=B.w,by=B.top-(st.bump[i]?Math.sin(st.bump[i]/.25*Math.PI)*6:0);
    box(cx-w/2,by,w,28,hit?PINK:YEL);txt(s.kind==='mile'?'★':(hit?'!':'?'),cx,by+21,15,'center');txt(s.label,cx,B.top-6,8.5,'center')}
@@ -294,7 +304,8 @@ g.restore();
  // panel
  g.fillStyle=CREAM;g.fillRect(0,180,W,70);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,181.5,W-3,67);
  const s=S[st.cur];txt('▶ '+(s.date?s.date+' :: ':'')+s.title,14,206,11,'left');txt(s.detail,14,228,12.5,'left',false);
- if(!st.hit.has(1)&&st.cur===0)txt('Run →  jump onto the blocks',W-14,243,10,'right');
+ txt(st.falls?'FALLS '+st.falls+' · small wins keep you moving':(st.hit.has(1)?'mind the pits · small stones help you across':'Run →  jump onto the blocks'),W-14,243,10,'right');
+ if(st.msgT>0){g.fillStyle='rgba(26,26,26,.78)';g.fillRect(0,34,W,146);txt('TRY AGAIN',W/2,92,26,'center',true,YEL);txt(st.msg[0],W/2,122,13,'center',false,CREAM);txt(st.msg[1],W/2,142,13,'center',false,CREAM);txt('respawning at your last checkpoint…',W/2,166,10,'center',true,PINK)}
  if(st.won){g.fillStyle='rgba(26,26,26,.7)';g.fillRect(0,34,W,146);txt('COURSE CLEAR!',W/2,100,26,'center',true,YEL);txt('Press ENTER / tap to play again',W/2,130,12,'center',true,CREAM)}
 }
 function loop(n){const dt=Math.min((n-last)/1000,.05);last=n;step(dt);draw();requestAnimationFrame(loop)}
