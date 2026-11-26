@@ -1,18 +1,19 @@
-<div align="center">
+```diff
+@@ RAYYAN AHMED (16A9DA) :: WORLD 1-1 :: AGENTIC AI INTERN @ BMW @@
 
-<img src="./retro-bento.svg" alt="Rayyan Ahmed — Agentic AI, Model Training & System Design" width="100%" />
+- [FIRE] AGENTIC & SYS DESIGN : multi-model loops, LangChain, FastAPI, Docker
++ [STAR] MODEL TRAINING       : sensor anomaly GBDT, 90% MLP, PyTorch from scratch
+- [1-UP] ALWAYS LEARNING      : agent hooks, RAG & papers @ BMW & Debrecen
+```
 
-<br/><br/>
+**`WARP PIPES`** · *pick a world (repos pinned below)*
 
-[![Agentic AI](https://img.shields.io/badge/AGENTIC_AI-sol-6ECFCF?style=for-the-badge&labelColor=1A1A1A)](https://github.com/16A9DA/sol)
-[![Model Training](https://img.shields.io/badge/MODEL_TRAINING-dlml-F5D87A?style=for-the-badge&labelColor=1A1A1A)](https://github.com/16A9DA/dlml)
-[![System Design](https://img.shields.io/badge/SYSTEM_DESIGN-Orbit-E8857A?style=for-the-badge&labelColor=1A1A1A)](https://github.com/16A9DA/Orbit)
-[![Always Learning](https://img.shields.io/badge/LEARNING-AgenticNotes-F2EDD7?style=for-the-badge&labelColor=1A1A1A)](https://github.com/16A9DA/AgenticNotes)
+- 🔥 **Agentic AI** → [`sol`](https://github.com/16A9DA/sol) *(multi-model coding council)* · [`NEVERMISSAI`](https://github.com/16A9DA/NEVERMISSAI) *(🥇 Kanz AI voice agent)* · [`rove`](https://github.com/16A9DA/rove) *(computer-use agent)*
+- ⭐ **Model Training** → [`predictive-maintenance`](https://github.com/16A9DA/predictive-maintenance-failure-detection) *(10k sensor GBDT, 0.68 minority F1)* · [`Job-Finder`](https://github.com/16A9DA/Job-Finder) *(OCR + Llama 3 + 90% MLP)* · [`dlml`](https://github.com/16A9DA/dlml) *(PyTorch from scratch)*
+- 🧱 **System Design** → [`whatsapp-notification-router`](https://github.com/16A9DA/whatsapp-notification-router) *(9-stage multimodal, confidence-gated)* · [`Orbit`](https://github.com/16A9DA/Orbit) *(unified AI control plane)*
+- 🍄 **Always Learning** → [`AgenticNotes`](https://github.com/16A9DA/AgenticNotes) · [`Claude`](https://github.com/16A9DA/Claude) *(agent hooks & internals)* · [`Prompt2Exploit`](https://github.com/16A9DA/Prompt2Exploit) *(AI code security)*
 
-<a href="https://linkedin.com/in/16a9da"><kbd>&nbsp;LINKEDIN&nbsp;</kbd></a>
-&nbsp;
-<a href="mailto:rayyan.tanweer@gmail.com"><kbd>&nbsp;EMAIL&nbsp;</kbd></a>
-&nbsp;
-<a href="https://discordapp.com/users/584487184141254731"><kbd>&nbsp;DISCORD&nbsp;</kbd></a>
+<kbd>Python</kbd> <kbd>PyTorch</kbd> <kbd>LangChain</kbd> <kbd>FastAPI</kbd> <kbd>Ollama</kbd> <kbd>RAG</kbd> <kbd>Docker</kbd> <kbd>PostgreSQL</kbd> <kbd>Redis</kbd>
 
-</div>
+---
+<sub>🕹️ **Co-op:** [LinkedIn](https://linkedin.com/in/16a9da) · [Email](mailto:rayyan.tanweer@gmail.com) · [Discord](https://discordapp.com/users/584487184141254731)</sub>
