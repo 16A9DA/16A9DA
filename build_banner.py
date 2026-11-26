@@ -40,7 +40,7 @@ S = [  # repos/commits roll up everything created since the previous stop
  ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 108, 2),
  ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0),
 ]
-W, H, GY, T, SP, FOCUS = 640, 250, 150, 2.6, 96, 190
+W, H, GY, T, SP, FOCUS = 640, 250, 150, 5.5, 96, 190
 N = len(S)
 COL = [44 + i * SP for i in range(N)]
 WORLD = COL[-1] + 120
