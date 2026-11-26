@@ -149,33 +149,43 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
 Path(__file__).with_name("mario-run.svg").write_text(svg, encoding="utf-8")
 print(N, "stages", commits, "commits", repos, "repos", len(svg), "bytes")
 
-# ---- clickable retro buttons (GitHub can't click inside an <img> SVG) + README ----
-GH = "https://github.com/16A9DA/"
-BTNS = [  # row, file, text, fill, url
- (0, "jobfinder", "Job-Finder", "#F5D87A", GH + "Job-Finder"),
- (0, "sol", "sol", "#F5D87A", GH + "sol"),
- (0, "nevermissai", "NEVERMISSAI", "#F5D87A", GH + "NEVERMISSAI"),
- (0, "lineage", "lineage-revocation", "#F5D87A", GH + "lineage-revocation"),
- (0, "rove", "rove", "#F5D87A", GH + "rove"),
- (0, "reset", "RESET", "#F5D87A", GH + "RESET"),
- (1, "innerscript", "InnerScript", "#F2EDD7", "https://innerscript.ca/"),
- (1, "linkedin", "LinkedIn", "#E8857A", "https://linkedin.com/in/16a9da"),
- (1, "email", "Email", "#E8857A", "mailto:rayyan.tanweer@gmail.com"),
- (1, "discord", "Discord", "#E8857A", "https://discordapp.com/users/584487184141254731"),
+# ---- clickable retro social buttons (GitHub can't click inside an <img> SVG) + README ----
+C = "#F2EDD7"
+def px(rects):  # pixel glyph from (x, y, w, h) on a 5x5 grid of 4px cells
+    return "".join(f'<rect x="{x * 4}" y="{y * 4}" width="{w * 4}" height="{h * 4}" fill="{C}"/>' for x, y, w, h in rects)
+T = 'fill="%s" text-anchor="middle" style="font:800 %dpx ui-monospace,Menlo,Consolas,monospace"'
+ICONS = {  # 20x20 glyphs on the dark tile
+ "linkedin": f'<text x="10" y="16" {T % (C, 19)}>in</text>',
+ "email": f'<text x="10" y="17" {T % (C, 21)}>@</text>',
+ "discord": (f'<rect x="0" y="5" width="20" height="11" fill="{C}"/><rect x="2" y="3" width="16" height="2" fill="{C}"/>'
+             '<rect x="3" y="9" width="5" height="2" fill="#1A1A1A"/><rect x="4.5" y="7.5" width="2" height="5" fill="#1A1A1A"/>'
+             '<rect x="12" y="8" width="2.5" height="2.5" fill="#1A1A1A"/><rect x="15.5" y="10.5" width="2.5" height="2.5" fill="#1A1A1A"/>'),
+ "github": f'<text x="10" y="16" {T % (C, 15)}>&gt;_</text>',
+}
+GH = "https://github.com/16A9DA"
+BTNS = [  # file, text, fill, url
+ ("linkedin", "LinkedIn", "#F5D87A", "https://linkedin.com/in/16a9da"),
+ ("email", "Email", "#E8857A", "mailto:rayyan.tanweer@gmail.com"),
+ ("discord", "Discord", "#F2EDD7", "https://discordapp.com/users/584487184141254731"),
+ ("github", "GitHub", "#6ECFCF", GH + "?tab=repositories"),
 ]
 out = Path(__file__).with_name("btn")
 out.mkdir(exist_ok=True)
-rows = {0: [], 1: []}
-for row, name, text, fill, url in BTNS:
-    w, h = len(text) * 7 + 30, 34
+for old in out.glob("*.svg"):
+    old.unlink()
+links = []
+for name, text, fill, url in BTNS:
+    w, h = 148, 42
     (out / f"{name}.svg").write_text(
-        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 4}" height="{h + 4}" viewBox="0 0 {w + 4} {h + 4}" role="img" aria-label="{e(text)}">'
-        f'<rect x="4" y="4" width="{w}" height="{h}" fill="#1A1A1A"/>'
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 5}" height="{h + 5}" viewBox="0 0 {w + 5} {h + 5}" role="img" aria-label="{e(text)}">'
+        f'<rect x="5" y="5" width="{w}" height="{h}" fill="#1A1A1A"/>'
         f'<rect x="1.5" y="1.5" width="{w - 3}" height="{h - 3}" fill="{fill}" stroke="#1A1A1A" stroke-width="3"/>'
-        f'<text x="{w / 2}" y="{h / 2 + 4.5}" text-anchor="middle" fill="#1A1A1A" '
-        f'style="font:800 12px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text></svg>\n', encoding="utf-8")
-    rows[row].append(f'<a href="{url}"><img src="./btn/{name}.svg" alt="{e(text)}" height="38" /></a>')
+        f'<rect x="3" y="3" width="{h - 6}" height="{h - 6}" fill="#1A1A1A"/>'
+        f'<g transform="translate({3 + (h - 6 - 20) / 2},{3 + (h - 6 - 20) / 2})">{ICONS[name]}</g>'
+        f'<text x="{h + (w - h) / 2}" y="{h / 2 + 5}" text-anchor="middle" fill="#1A1A1A" '
+        f'style="font:800 14px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text></svg>\n', encoding="utf-8")
+    links.append(f'<a href="{url}"><img src="./btn/{name}.svg" alt="{e(text)}" height="47" /></a>')
 Path(__file__).with_name("README.md").write_text(
     '<div align="center">\n\n'
-    f'<a href="https://github.com/16A9DA?tab=repositories"><img src="./mario-run.svg" alt="Rayyan Ahmed: Mario runs from CS at University of Debrecen through Job-Finder, sol, InnerScript, NEVERMISSAI (Kanz AI gold), lineage-revocation, rove, BMW (Agentic AI Intern, Oct 2026) and RESET to the co-op flag" width="800" /></a>\n\n'
-    + "\n".join(rows[0]) + "\n\n" + "\n".join(rows[1]) + "\n\n</div>\n", encoding="utf-8")
+    f'<a href="{GH}?tab=repositories"><img src="./mario-run.svg" alt="Rayyan Ahmed: Mario runs from CS at University of Debrecen through Job-Finder, sol, InnerScript, NEVERMISSAI (Kanz AI gold), lineage-revocation, rove, BMW (Agentic AI Intern, Oct 2026) and RESET to the co-op flag" width="800" /></a>\n\n'
+    + "&nbsp;\n".join(links) + "\n\n</div>\n", encoding="utf-8")
