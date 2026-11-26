@@ -2,11 +2,25 @@
 """Generate game.svg: self-playing, looping Mario banner (no input)."""
 import html
 from pathlib import Path
-from mario_game import STAGES, MARIO_SPRITE, PALETTE
+from mario_game import MARIO_SPRITE, PALETTE
+
+# Chronological (repo creation dates; BMW start 1 Oct 2026)
+STAGES = [
+    dict(label="CS", kind="start", powerup="Always learning", title="START :: CS @ UNIVERSITY OF DEBRECEN", detail="Computer Science student. The run begins here."),
+    dict(label="JobFind", kind="qblock", powerup="90% MLP", title="JAN 2026 :: Job-Finder", detail="Tesseract OCR + Llama 3 parser + TF-IDF MLP (90% val accuracy)"),
+    dict(label="SensML", kind="qblock", powerup="F1=0.68", title="MAY 2026 :: predictive-maintenance", detail="10k sensor anomaly pipeline (3.4% fail); GBDT F1 0.68 minority"),
+    dict(label="sol", kind="qblock", powerup="Ollama+RAG", title="JUN 2026 :: sol", detail="Offline terminal coding agent w/ multi-model council & RAG"),
+    dict(label="NEVERMISS", kind="qblock", powerup="1ST GOLD", title="JUL 2026 :: NEVERMISSAI (KANZ AI GOLD)", detail="Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)"),
+    dict(label="Lineage", kind="qblock", powerup="COSE+CBOR", title="AUG 2026 :: lineage-revocation", detail="Delegation revocation verifier: COSE_Sign1 + RFC 8949 CBOR"),
+    dict(label="rove", kind="qblock", powerup="MacAgent", title="SEP 2026 :: rove", detail="macOS computer-use agent: specialist agents, voice, approval gates"),
+    dict(label="BMW", kind="qblock", powerup="LangChain", title="1 OCT 2026 :: JOINED BMW AS AGENTIC AI INTERN", detail="System design · LangChain · agentic AI in production"),
+    dict(label="RESET", kind="pipe", powerup="SwiftUI", title="OCT 2026 :: RESET", detail="Local-first AI health app (SwiftUI + SwiftData)"),
+    dict(label="CO-OP", kind="flag", powerup="1-UP!", title="COURSE CLEAR! :: LET'S BUILD TOGETHER", detail="LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord"),
+]
 
 W, H, GY, T = 640, 250, 150, 2.4   # width, height, ground y, seconds per stage
 N = len(STAGES)
-COL = [52 + i * 67 for i in range(N)]
+COL = [44 + i * 60 for i in range(N)]
 TOTAL = N * T
 e = html.escape
 pct = lambda v: f"{v * 100:.3f}%"
@@ -88,7 +102,7 @@ for i, st in enumerate(STAGES):
         f'<g class="v{i}"><text x="14" y="203" class="m" font-size="11" fill="#1A1A1A">▶ {e(st["title"])}</text>'
         f'<text x="14" y="224" class="s" font-size="12.5" fill="#1A1A1A">{e(st["detail"])}</text>'
         f'<text x="{W - 14}" y="25" text-anchor="end" class="m" font-size="11" fill="#1A1A1A">POWER-UP: {e(st["powerup"])}</text>'
-        f'<text x="{W // 2}" y="25" text-anchor="middle" class="m" font-size="11" fill="#1A1A1A">COINS x{coins:02d} · WORLD 1-{i + 1}</text>'
+        f'<text x="{W // 2}" y="25" text-anchor="middle" class="m" font-size="11" fill="#1A1A1A">COINS x{coins:02d} · STAGE {i}/{N - 1}</text>'
         f'<text x="14" y="25" class="m" font-size="11" fill="#1A1A1A">SCORE {score:05d}</text></g>')
 
 bricks = "".join(f'<line x1="{x}" y1="{GY}" x2="{x}" y2="{GY + 22}" stroke="#1A1A1A" stroke-width="2" opacity=".35"/>' for x in range(44, W, 40))
