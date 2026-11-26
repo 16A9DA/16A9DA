@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate game.svg: self-playing, scrolling, looping Mario career run (no input)."""
+"""Generate mario-run.svg: self-playing, scrolling, looping Mario career run (no input)."""
 import html
 from pathlib import Path
 MARIO_SPRITE = [
@@ -146,5 +146,5 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
 {"".join(info)}
 </svg>
 '''
-Path(__file__).with_name("game.svg").write_text(svg, encoding="utf-8")
+Path(__file__).with_name("mario-run.svg").write_text(svg, encoding="utf-8")
 print(N, "stages", commits, "commits", repos, "repos", len(svg), "bytes")
