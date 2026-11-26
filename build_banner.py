@@ -28,35 +28,19 @@ PALETTE = {
 }
 
 # (label, kind, date, title, detail, commits)  kind: start | repo | mile | pipe | flag
-S = [
- ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0),
- ("MovieNLP", "repo", "NOV 2025", "Movie-Sentiment", "NLP project: movie review sentiment classification", 29),
- ("CS50AI", "repo", "DEC 2025", "CS50AI", "Harvard CS50 AI course projects", 5),
- ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 1),
- ("Studdy", "repo", "MAR 2026", "StuddyBuddy", "Collaborative study platform", 6),
- ("DataSci", "repo", "APR 2026", "Data-Science", "Data science portfolio: projects & notebooks", 12),
- ("Claude", "repo", "APR 2026", "Claude", "Claude Code internals: features, hooks, optimization", 3),
- ("P2Exploit", "repo", "MAY 2026", "Prompt2Exploit", "Security study: AI-written vs human-written web apps", 1),
- ("SensML", "repo", "MAY 2026", "predictive-maintenance", "10k sensor anomaly pipeline; GBDT F1 0.68 on 3.4% failures", 16),
- ("Portfolio", "repo", "MAY 2026", "me", "Personal portfolio website", 28),
- ("WidgetAI", "repo", "JUN 2026", "WidgetAI", "Desktop widget: many AI providers from one place", 17),
- ("sol", "repo", "JUN 2026", "sol", "Local-first open-source AI coding assistant, council + RAG", 72),
- ("InnerScript", "mile", "JUL 2026", "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "Built a mental-health community platform: 8000+ users/followers", 0),
- ("Orbit", "repo", "JUL 2026", "Orbit", "All-in-one AI dashboard: APIs, billing, alerts, automation", 43),
- ("NEVERMISS", "mile", "JUL 2026", "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", 16),
- ("WA-Router", "repo", "AUG 2026", "whatsapp-notification-router", "HackerRank Orchestrate: OCR + speech + RAG + LLM routing", 2),
- ("dlml", "repo", "AUG 2026", "dlml", "PyTorch notebooks: neural nets, training, deep learning", 7),
- ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Delegation revocation verifier: COSE_Sign1 + RFC 8949 CBOR", 64),
- ("Research", "repo", "AUG 2026", "researchAgent", "Local LLM research agent", 9),
- ("bot", "repo", "SEP 2026", "bot", "Python bot", 30),
- ("offline", "repo", "SEP 2026", "offline", "Self-hosted AI companion: chat, documents, memory, automation", 20),
- ("rove", "repo", "SEP 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 59),
- ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "System design · LangChain · agentic AI in production", 0),
- ("AgentNotes", "repo", "OCT 2026", "AgenticNotes", "Agentic AI theory notes", 4),
- ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 104),
- ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0),
+S = [  # repos/commits roll up everything created since the previous stop
+ ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0, 0),
+ ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 35, 3),
+ ("sol", "repo", "JUN 2026", "sol", "Local-first open-source AI coding assistant, council + RAG", 155, 8),
+ ("InnerScript", "mile", "JUL 2026", "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "Built a mental-health community platform: 8000+ users/followers", 0, 0),
+ ("NEVERMISS", "mile", "JUL 2026", "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", 59, 2),
+ ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Research: COSE_Sign1 + RFC 8949 CBOR delegation revocation verifier", 73, 3),
+ ("rove", "repo", "SEP 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 118, 4),
+ ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "System design · LangChain · agentic AI in production", 0, 0),
+ ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 108, 2),
+ ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0),
 ]
-W, H, GY, T, SP, FOCUS = 640, 250, 150, 1.7, 76, 190
+W, H, GY, T, SP, FOCUS = 640, 250, 150, 2.6, 96, 190
 N = len(S)
 COL = [44 + i * SP for i in range(N)]
 WORLD = COL[-1] + 120
@@ -106,7 +90,7 @@ sprite = "".join(f'<rect x="{c * px - 18}" y="{r * px - 42}" width="{px}" height
 
 objs, info = [], []
 repos = commits = 0
-for i, (lbl, k, date, title, detail, cm) in enumerate(S):
+for i, (lbl, k, date, title, detail, cm, rp) in enumerate(S):
     cx, l = COL[i], e(lbl)
     if k in ("repo", "mile"):
         w, sym = (30, "?") if k == "repo" else (40, "★")
@@ -118,7 +102,6 @@ for i, (lbl, k, date, title, detail, cm) in enumerate(S):
                     f'<g class="q{i}">{box("#F5D87A", sym)}</g><g class="h{i}">{box("#E8857A", "!" if k == "repo" else "★")}</g></g>'
                     f'<circle class="c{i}" cx="{cx}" cy="52" r="6" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2"/>'
                     f'<text x="{cx}" y="68" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{l}</text>')
-        repos += lbl not in ("InnerScript", "BMW")
     elif k == "start":
         objs.append(f'<rect x="{cx - 22}" y="84" width="44" height="22" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2.5"/>'
                     f'<text x="{cx}" y="99" text-anchor="middle" class="m" font-size="10" fill="#1A1A1A">{l}</text>')
@@ -126,13 +109,12 @@ for i, (lbl, k, date, title, detail, cm) in enumerate(S):
         objs.append(f'<rect x="{cx - 20}" y="118" width="40" height="11" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5"/>'
                     f'<rect x="{cx - 15}" y="129" width="30" height="{GY - 129}" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5"/>'
                     f'<text x="{cx}" y="111" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{l}</text>')
-        repos += 1
     else:
         objs.append(f'<line x1="{cx}" y1="66" x2="{cx}" y2="{GY}" stroke="#1A1A1A" stroke-width="3"/>'
                     f'<circle cx="{cx}" cy="64" r="5" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2"/>'
                     f'<polygon class="fl" points="{cx},70 {cx - 28},81 {cx},92" fill="#E8857A" stroke="#1A1A1A" stroke-width="2"/>'
                     f'<text x="{cx}" y="56" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{l}</text>')
-    commits += cm
+    commits += cm; repos += rp
     objs.append(f'<circle cx="{cx}" cy="{GY + 11}" r="4" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2"/>')
     head = f"{date} :: {title}" if date and k in ("repo", "pipe") else (f"{date} :: {title}" if date else title)
     info.append(
