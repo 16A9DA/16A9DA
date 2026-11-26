@@ -1,45 +1,62 @@
 #!/usr/bin/env python3
-"""Generate game.svg: self-playing, looping Mario banner (no input)."""
+"""Generate game.svg: self-playing, scrolling, looping Mario career run (no input)."""
 import html
 from pathlib import Path
 from mario_game import MARIO_SPRITE, PALETTE
 
-# Chronological (repo creation dates; BMW start 1 Oct 2026)
-STAGES = [
-    dict(label="CS", kind="start", powerup="Always learning", title="START :: CS @ UNIVERSITY OF DEBRECEN", detail="Computer Science student. The run begins here."),
-    dict(label="JobFind", kind="qblock", powerup="90% MLP", title="JAN 2026 :: Job-Finder", detail="Tesseract OCR + Llama 3 parser + TF-IDF MLP (90% val accuracy)"),
-    dict(label="SensML", kind="qblock", powerup="F1=0.68", title="MAY 2026 :: predictive-maintenance", detail="10k sensor anomaly pipeline (3.4% fail); GBDT F1 0.68 minority"),
-    dict(label="sol", kind="qblock", powerup="Ollama+RAG", title="JUN 2026 :: sol", detail="Offline terminal coding agent w/ multi-model council & RAG"),
-    dict(label="NEVERMISS", kind="qblock", powerup="1ST GOLD", title="JUL 2026 :: NEVERMISSAI (KANZ AI GOLD)", detail="Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)"),
-    dict(label="Lineage", kind="qblock", powerup="COSE+CBOR", title="AUG 2026 :: lineage-revocation", detail="Delegation revocation verifier: COSE_Sign1 + RFC 8949 CBOR"),
-    dict(label="rove", kind="qblock", powerup="MacAgent", title="SEP 2026 :: rove", detail="macOS computer-use agent: specialist agents, voice, approval gates"),
-    dict(label="BMW", kind="qblock", powerup="LangChain", title="1 OCT 2026 :: JOINED BMW AS AGENTIC AI INTERN", detail="System design · LangChain · agentic AI in production"),
-    dict(label="RESET", kind="pipe", powerup="SwiftUI", title="OCT 2026 :: RESET", detail="Local-first AI health app (SwiftUI + SwiftData)"),
-    dict(label="CO-OP", kind="flag", powerup="1-UP!", title="COURSE CLEAR! :: LET'S BUILD TOGETHER", detail="LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord"),
+# (label, kind, date, title, detail, commits)  kind: start | repo | mile | pipe | flag
+S = [
+ ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0),
+ ("MovieNLP", "repo", "NOV 2025", "Movie-Sentiment", "NLP project: movie review sentiment classification", 29),
+ ("CS50AI", "repo", "DEC 2025", "CS50AI", "Harvard CS50 AI course projects", 5),
+ ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 1),
+ ("Studdy", "repo", "MAR 2026", "StuddyBuddy", "Collaborative study platform", 6),
+ ("DataSci", "repo", "APR 2026", "Data-Science", "Data science portfolio: projects & notebooks", 12),
+ ("Claude", "repo", "APR 2026", "Claude", "Claude Code internals: features, hooks, optimization", 3),
+ ("P2Exploit", "repo", "MAY 2026", "Prompt2Exploit", "Security study: AI-written vs human-written web apps", 1),
+ ("SensML", "repo", "MAY 2026", "predictive-maintenance", "10k sensor anomaly pipeline; GBDT F1 0.68 on 3.4% failures", 16),
+ ("Portfolio", "repo", "MAY 2026", "me", "Personal portfolio website", 28),
+ ("WidgetAI", "repo", "JUN 2026", "WidgetAI", "Desktop widget: many AI providers from one place", 17),
+ ("sol", "repo", "JUN 2026", "sol", "Local-first open-source AI coding assistant, council + RAG", 72),
+ ("InnerScript", "mile", "JUL 2026", "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "Built a mental-health community platform: 8000+ users/followers", 0),
+ ("Orbit", "repo", "JUL 2026", "Orbit", "All-in-one AI dashboard: APIs, billing, alerts, automation", 43),
+ ("NEVERMISS", "mile", "JUL 2026", "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", 16),
+ ("WA-Router", "repo", "AUG 2026", "whatsapp-notification-router", "HackerRank Orchestrate: OCR + speech + RAG + LLM routing", 2),
+ ("dlml", "repo", "AUG 2026", "dlml", "PyTorch notebooks: neural nets, training, deep learning", 7),
+ ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Delegation revocation verifier: COSE_Sign1 + RFC 8949 CBOR", 64),
+ ("Research", "repo", "AUG 2026", "researchAgent", "Local LLM research agent", 9),
+ ("bot", "repo", "SEP 2026", "bot", "Python bot", 30),
+ ("offline", "repo", "SEP 2026", "offline", "Self-hosted AI companion: chat, documents, memory, automation", 20),
+ ("rove", "repo", "SEP 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 59),
+ ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "System design · LangChain · agentic AI in production", 0),
+ ("AgentNotes", "repo", "OCT 2026", "AgenticNotes", "Agentic AI theory notes", 4),
+ ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 104),
+ ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0),
 ]
-
-W, H, GY, T = 640, 250, 150, 2.4   # width, height, ground y, seconds per stage
-N = len(STAGES)
-COL = [44 + i * 60 for i in range(N)]
+W, H, GY, T, SP, FOCUS = 640, 250, 150, 1.7, 76, 190
+N = len(S)
+COL = [44 + i * SP for i in range(N)]
+WORLD = COL[-1] + 120
 TOTAL = N * T
 e = html.escape
 pct = lambda v: f"{v * 100:.3f}%"
+cam = lambda x: -min(max(x - FOCUS, 0), WORLD - (W - 8))
 
-css = [".m{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800}"
-       ".s{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-weight:600}"
-       "*{animation-duration:%.1fs;animation-iteration-count:infinite;animation-timing-function:linear}" % TOTAL]
+css = ["*{animation-duration:%.1fs;animation-iteration-count:infinite;animation-timing-function:linear}" % TOTAL,
+       ".m{font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:800}.s{font-family:-apple-system,'Segoe UI',Helvetica,Arial,sans-serif;font-weight:600}"]
 
-# Mario run (X) : at col[i] until 70% of slot, then run to col[i+1]
-kx = [f"0%{{transform:translateX({COL[0]}px)}}"]
+kx, kc = [], []
+def stop(f, i):
+    kx.append(f"{pct(f)}{{transform:translateX({COL[i]}px)}}")
+    kc.append(f"{pct(f)}{{transform:translateX({cam(COL[i])}px)}}")
 for i in range(N):
-    kx.append(f"{pct((i + .62) / N)}{{transform:translateX({COL[i]}px)}}")
+    stop(i / N if i == 0 else (i + .0) / N, i) if i == 0 else None
+    stop((i + .62) / N, i)
     if i < N - 1:
-        kx.append(f"{pct((i + 1) / N)}{{transform:translateX({COL[i + 1]}px)}}")
-kx.append(f"{pct((N - .06) / N)}{{transform:translateX({COL[-1]}px)}}")
-kx.append(f"100%{{transform:translateX({COL[-1]}px)}}")
-css.append("@keyframes run{" + "".join(kx) + "}.run{animation-name:run}")
+        stop((i + 1) / N, i + 1)
+stop((N - .06) / N, N - 1); stop(1, N - 1)
+css.append("@keyframes run{" + "".join(kx) + "}.run{animation-name:run}@keyframes cam{" + "".join(kc) + "}.cam{animation-name:cam}")
 
-# Mario jump (Y): hop at start of every slot
 ky = ["0%{transform:translateY(0)}"]
 for i in range(N):
     a = i / N
@@ -49,17 +66,15 @@ for i in range(N):
 ky.append("100%{transform:translateY(0)}")
 css.append("@keyframes hop{" + "".join(ky) + "}.hop{animation-name:hop}")
 
-# Per-slot show/hide + block states
 for i in range(N):
     a, b = i / N, (i + 1) / N
-    css.append(f"@keyframes v{i}{{0%,{pct(a)}{{opacity:0}}{pct(a + .02 / N)},{pct(b - .02 / N)}{{opacity:1}}{pct(b)},100%{{opacity:0}}}}.v{i}{{animation-name:v{i};opacity:0}}")
     hit = a + .14 / N
-    css.append(f"@keyframes h{i}{{0%,{pct(hit)}{{opacity:0}}{pct(hit + .001)},99.9%{{opacity:1}}100%{{opacity:0}}}}.h{i}{{animation-name:h{i};opacity:0}}")
-    css.append(f"@keyframes q{i}{{0%,{pct(hit)}{{opacity:1}}{pct(hit + .001)},99.9%{{opacity:0}}100%{{opacity:1}}}}.q{i}{{animation-name:q{i}}}")
-    css.append(f"@keyframes c{i}{{0%,{pct(hit)}{{opacity:0;transform:translateY(0)}}{pct(hit + .02 / N)}{{opacity:1;transform:translateY(-10px)}}{pct(hit + .30 / N)}{{opacity:1;transform:translateY(-26px)}}{pct(hit + .34 / N)},100%{{opacity:0}}}}.c{i}{{animation-name:c{i};opacity:0}}")
-    css.append(f"@keyframes b{i}{{0%,{pct(hit - .01 / N)}{{transform:translateY(0)}}{pct(hit + .03 / N)}{{transform:translateY(-5px)}}{pct(hit + .08 / N)},100%{{transform:translateY(0)}}}}.b{i}{{animation-name:b{i}}}")
-# cloud drift + flag wave
-css.append("@keyframes cl{0%{transform:translateX(0)}100%{transform:translateX(-40px)}}.cl{animation-name:cl;animation-direction:alternate;animation-duration:"+f"{TOTAL / 2:.1f}s}}")
+    css.append(f"@keyframes v{i}{{0%,{pct(a)}{{opacity:0}}{pct(a + .02 / N)},{pct(b - .02 / N)}{{opacity:1}}{pct(b)},100%{{opacity:0}}}}.v{i}{{animation-name:v{i};opacity:0}}")
+    if S[i][1] in ("repo", "mile"):
+        css.append(f"@keyframes h{i}{{0%,{pct(hit)}{{opacity:0}}{pct(hit + .001)},99.9%{{opacity:1}}100%{{opacity:0}}}}.h{i}{{animation-name:h{i};opacity:0}}")
+        css.append(f"@keyframes q{i}{{0%,{pct(hit)}{{opacity:1}}{pct(hit + .001)},99.9%{{opacity:0}}100%{{opacity:1}}}}.q{i}{{animation-name:q{i}}}")
+        css.append(f"@keyframes c{i}{{0%,{pct(hit)}{{opacity:0;transform:translateY(0)}}{pct(hit + .02 / N)}{{opacity:1;transform:translateY(-10px)}}{pct(hit + .30 / N)}{{opacity:1;transform:translateY(-12px)}}{pct(hit + .34 / N)},100%{{opacity:0}}}}.c{i}{{animation-name:c{i};opacity:0}}")
+        css.append(f"@keyframes b{i}{{0%,{pct(hit - .01 / N)}{{transform:translateY(0)}}{pct(hit + .03 / N)}{{transform:translateY(-5px)}}{pct(hit + .08 / N)},100%{{transform:translateY(0)}}}}.b{i}{{animation-name:b{i}}}")
 css.append("@keyframes fl{0%,100%{transform:scaleX(1)}50%{transform:scaleX(.7)}}.fl{animation-name:fl;animation-duration:.8s;transform-box:fill-box;transform-origin:left}")
 
 px = 3
@@ -67,59 +82,64 @@ sprite = "".join(f'<rect x="{c * px - 18}" y="{r * px - 42}" width="{px}" height
                  for r, row in enumerate(MARIO_SPRITE) for c, ch in enumerate(row) if ch in PALETTE)
 
 objs, info = [], []
-coins = score = 0
-for i, st in enumerate(STAGES):
-    cx, k, lbl = COL[i], st["kind"], e(st["label"])
-    if k == "qblock":
-        objs.append(
-            f'<g class="b{i}"><rect x="{cx - 14 + 3}" y="{74 + 3}" width="28" height="28" fill="#1A1A1A"/>'
-            f'<g class="q{i}"><rect x="{cx - 14}" y="74" width="28" height="28" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5"/>'
-            f'<text x="{cx}" y="94" text-anchor="middle" class="m" font-size="15">?</text></g>'
-            f'<g class="h{i}"><rect x="{cx - 14}" y="74" width="28" height="28" fill="#E8857A" stroke="#1A1A1A" stroke-width="2.5"/>'
-            f'<text x="{cx}" y="94" text-anchor="middle" class="m" font-size="15">!</text></g></g>'
-            f'<circle class="c{i}" cx="{cx}" cy="64" r="6" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2"/>'
-            f'<text x="{cx}" y="116" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{lbl}</text>')
-        coins += 1; score += 200
+repos = commits = 0
+for i, (lbl, k, date, title, detail, cm) in enumerate(S):
+    cx, l = COL[i], e(lbl)
+    if k in ("repo", "mile"):
+        w, sym = (30, "?") if k == "repo" else (40, "★")
+        x0 = cx - w // 2
+        def box(fill, s):
+            return (f'<rect x="{x0}" y="74" width="{w}" height="28" fill="{fill}" stroke="#1A1A1A" stroke-width="2.5"/>'
+                    f'<text x="{cx}" y="94" text-anchor="middle" class="m" font-size="15" fill="#1A1A1A">{s}</text>')
+        objs.append(f'<g class="b{i}"><rect x="{x0 + 3}" y="77" width="{w}" height="28" fill="#1A1A1A"/>'
+                    f'<g class="q{i}">{box("#F5D87A", sym)}</g><g class="h{i}">{box("#E8857A", "!" if k == "repo" else "★")}</g></g>'
+                    f'<circle class="c{i}" cx="{cx}" cy="52" r="6" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2"/>'
+                    f'<text x="{cx}" y="68" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{l}</text>')
+        repos += lbl not in ("InnerScript", "BMW")
+    elif k == "start":
+        objs.append(f'<rect x="{cx - 22}" y="84" width="44" height="22" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2.5"/>'
+                    f'<text x="{cx}" y="99" text-anchor="middle" class="m" font-size="10" fill="#1A1A1A">{l}</text>')
     elif k == "pipe":
-        objs.append(
-            f'<rect x="{cx - 20}" y="118" width="40" height="11" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5"/>'
-            f'<rect x="{cx - 15}" y="129" width="30" height="{GY - 129}" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5"/>'
-            f'<text x="{cx}" y="111" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{lbl}</text>')
-        score += 500
-    elif k == "flag":
-        objs.append(
-            f'<line x1="{cx}" y1="66" x2="{cx}" y2="{GY}" stroke="#1A1A1A" stroke-width="3"/>'
-            f'<circle cx="{cx}" cy="64" r="5" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2"/>'
-            f'<polygon class="fl" points="{cx},70 {cx - 28},81 {cx},92" fill="#E8857A" stroke="#1A1A1A" stroke-width="2"/>'
-            f'<text x="{cx}" y="56" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{lbl}</text>')
-        score += 1000
+        objs.append(f'<rect x="{cx - 20}" y="118" width="40" height="11" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5"/>'
+                    f'<rect x="{cx - 15}" y="129" width="30" height="{GY - 129}" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5"/>'
+                    f'<text x="{cx}" y="111" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{l}</text>')
+        repos += 1
     else:
-        objs.append(
-            f'<rect x="{cx - 22}" y="84" width="44" height="22" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2.5"/>'
-            f'<text x="{cx}" y="99" text-anchor="middle" class="m" font-size="10" fill="#1A1A1A">{lbl}</text>')
+        objs.append(f'<line x1="{cx}" y1="66" x2="{cx}" y2="{GY}" stroke="#1A1A1A" stroke-width="3"/>'
+                    f'<circle cx="{cx}" cy="64" r="5" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2"/>'
+                    f'<polygon class="fl" points="{cx},70 {cx - 28},81 {cx},92" fill="#E8857A" stroke="#1A1A1A" stroke-width="2"/>'
+                    f'<text x="{cx}" y="56" text-anchor="middle" class="m" font-size="8.5" fill="#1A1A1A">{l}</text>')
+    commits += cm
     objs.append(f'<circle cx="{cx}" cy="{GY + 11}" r="4" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2"/>')
+    head = f"{date} :: {title}" if date and k in ("repo", "pipe") else (f"{date} :: {title}" if date else title)
     info.append(
-        f'<g class="v{i}"><text x="14" y="203" class="m" font-size="11" fill="#1A1A1A">▶ {e(st["title"])}</text>'
-        f'<text x="14" y="224" class="s" font-size="12.5" fill="#1A1A1A">{e(st["detail"])}</text>'
-        f'<text x="{W - 14}" y="25" text-anchor="end" class="m" font-size="11" fill="#1A1A1A">POWER-UP: {e(st["powerup"])}</text>'
-        f'<text x="{W // 2}" y="25" text-anchor="middle" class="m" font-size="11" fill="#1A1A1A">COINS x{coins:02d} · STAGE {i}/{N - 1}</text>'
-        f'<text x="14" y="25" class="m" font-size="11" fill="#1A1A1A">SCORE {score:05d}</text></g>')
+        f'<g class="v{i}"><text x="14" y="203" class="m" font-size="11" fill="#1A1A1A">▶ {e(head)}</text>'
+        f'<text x="14" y="224" class="s" font-size="12.5" fill="#1A1A1A">{e(detail)}</text>'
+        f'<text x="{W - 14}" y="25" text-anchor="end" class="m" font-size="11" fill="#1A1A1A">COMMITS {commits:04d}</text>'
+        f'<text x="{W // 2}" y="25" text-anchor="middle" class="m" font-size="11" fill="#1A1A1A">REPOS x{repos:02d}</text>'
+        f'<text x="14" y="25" class="m" font-size="11" fill="#1A1A1A">STAGE {i:02d}/{N - 1}</text></g>')
 
-bricks = "".join(f'<line x1="{x}" y1="{GY}" x2="{x}" y2="{GY + 22}" stroke="#1A1A1A" stroke-width="2" opacity=".35"/>' for x in range(44, W, 40))
-cloud = lambda x, y: (f'<g transform="translate({x},{y})"><rect width="42" height="10" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2"/>'
-                      f'<rect x="10" y="-6" width="22" height="8" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2"/><rect x="12" y="-1" width="18" height="3" fill="#F2EDD7"/></g>')
+bricks = "".join(f'<line x1="{x}" y1="{GY}" x2="{x}" y2="{GY + 22}" stroke="#1A1A1A" stroke-width="2" opacity=".35"/>' for x in range(-4, WORLD + 700, 40))
+def cloud(x, y):
+    return (f'<g transform="translate({x},{y})"><rect width="42" height="10" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2"/>'
+            f'<rect x="10" y="-6" width="22" height="8" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2"/><rect x="12" y="-1" width="18" height="3" fill="#F2EDD7"/></g>')
+clouds = "".join(cloud(120 + j * 310, 46 + (j % 3) * 4) for j in range(N * SP // 310 + 2))
 
-svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Rayyan Ahmed - Mario runs through BMW, sol, rove, NEVERMISSAI, lineage-revocation, Job-Finder, predictive-maintenance, RESET, and the co-op flagpole">
+svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{W}" height="{H}" role="img" aria-label="Rayyan Ahmed career as a Mario level: CS at University of Debrecen, 21 public repos, InnerScript, Kanz AI gold, BMW, RESET, co-op flag">
 <style>{"".join(css)}</style>
+<defs><clipPath id="v"><rect x="3" y="3" width="{W - 8}" height="{GY + 22 - 3}"/></clipPath></defs>
 <rect x="6" y="6" width="{W - 8}" height="{H - 8}" fill="#1A1A1A"/>
 <rect x="3" y="3" width="{W - 8}" height="{H - 8}" fill="#6ECFCF" stroke="#1A1A1A" stroke-width="3"/>
-<rect x="3" y="3" width="{W - 8}" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="3"/>
-<g class="cl">{cloud(520, 48)}{cloud(240, 44)}{cloud(640, 50)}</g>
-<rect x="3" y="{GY}" width="{W - 8}" height="22" fill="#E8857A" stroke="#1A1A1A" stroke-width="3"/>{bricks}
+<g clip-path="url(#v)"><g class="cam">
+{clouds}
+<rect x="-700" y="{GY}" width="{WORLD + 1400}" height="22" fill="#E8857A" stroke="#1A1A1A" stroke-width="3"/>{bricks}
 {"".join(objs)}
 <g class="run"><g class="hop"><g transform="translate(0,{GY})">{sprite}</g></g></g>
+</g></g>
+<rect x="3" y="3" width="{W - 8}" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="3"/>
 <rect x="3" y="180" width="{W - 8}" height="62" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="3"/>
 {"".join(info)}
 </svg>
 '''
 Path(__file__).with_name("game.svg").write_text(svg, encoding="utf-8")
+print(N, "stages", commits, "commits", repos, "repos", len(svg), "bytes")
