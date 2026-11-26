@@ -41,6 +41,18 @@ S = [  # repos/commits roll up everything created since the previous stop (dlml 
  ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 108, 2),
  ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0),
 ]
+TECH = {  # frameworks per stop, from each repo's dependency files / README
+ "MovieNLP": "Streamlit · scikit-learn · NLTK · pandas", "CS50AI": "Python",
+ "JobFind": "FastAPI · Tesseract OCR · Ollama (Llama 3) · TF-IDF MLP", "Studdy": "Django · DRF · PostgreSQL · Docker",
+ "DataSci": "pandas · NumPy · Jupyter", "Claude": "Next.js · TypeScript · Claude Code", "P2Exploit": "Flask · Python · Jupyter",
+ "SensML": "scikit-learn · Streamlit · pandas · matplotlib", "Portfolio": "Django · PostgreSQL · HTML/CSS", "WidgetAI": "PySide6 · Python · Docker",
+ "sol": "Ollama · ChromaDB · Typer · Rich · httpx", "Orbit": "Django · DRF · PostgreSQL · Discord alerts",
+ "NEVERMISS": "Twilio · Groq Llama 3.3 · ChromaDB · Next.js · Docker · Redis", "Orchestr.": "OpenAI · faster-whisper · sentence-transformers · Tesseract",
+ "Orchestrate": "OpenAI · faster-whisper · sentence-transformers · Tesseract", "Lineage": "Python · cbor2 · cryptography",
+ "Research": "LangChain · Ollama · Tavily · Streamlit", "bot": "LangChain · LangGraph · Groq · Streamlit", "offline": "LangChain · LangGraph · Ollama · ChromaDB · FastAPI",
+ "BMW": "LangChain · System design", "rove": "Electron · FastAPI · Playwright · OpenAI · Anthropic · PyObjC",
+ "RESET": "SwiftUI · SwiftData · HealthKit · FastAPI",
+}
 W, H, GY, T, SP, FOCUS = 640, 250, 150, 5.5, 96, 190
 N = len(S)
 COL = [44 + i * SP for i in range(N)]
@@ -119,8 +131,9 @@ for i, (lbl, k, date, title, detail, cm, rp) in enumerate(S):
     objs.append(f'<circle cx="{cx}" cy="{GY + 11}" r="4" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2"/>')
     head = f"{date} :: {title}" if date and k in ("repo", "pipe") else (f"{date} :: {title}" if date else title)
     info.append(
-        f'<g class="v{i}"><text x="14" y="203" class="m" font-size="11" fill="#1A1A1A">▶ {e(head)}</text>'
-        f'<text x="14" y="224" class="s" font-size="12.5" fill="#1A1A1A">{e(detail)}</text>'
+        f'<g class="v{i}"><text x="14" y="{198 if TECH.get(lbl) else 203}" class="m" font-size="11" fill="#1A1A1A">▶ {e(head)}</text>'
+        f'<text x="14" y="{214 if TECH.get(lbl) else 224}" class="s" font-size="12.5" fill="#1A1A1A">{e(detail)}</text>'
+        + (f'<text x="14" y="233" class="m" font-size="10.5" fill="#B04A3F">STACK: {e(TECH[lbl])}</text>' if TECH.get(lbl) else "") +
         f'<text x="{W - 14}" y="25" text-anchor="end" class="m" font-size="11" fill="#1A1A1A">COMMITS {commits:04d}</text>'
         f'<text x="{W // 2}" y="25" text-anchor="middle" class="m" font-size="11" fill="#1A1A1A">REPOS x{repos:02d}</text>'
         f'<text x="14" y="25" class="m" font-size="11" fill="#1A1A1A">STAGE {i:02d}/{N - 1}</text></g>')
@@ -228,7 +241,7 @@ FULL = [  # label, kind, date, title, detail, commits, repos, github repo, story
  ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0, "", ""),
 ]
 EXTRA_URL = {"InnerScript": "https://innerscript.ca/", "BMW": "https://linkedin.com/in/16a9da", "CO-OP": "https://linkedin.com/in/16a9da"}
-data = [dict(label=r[0], kind=r[1], date=r[2], title=r[3], detail=r[4], cm=r[5], rp=r[6], story=r[8],
+data = [dict(label=r[0], kind=r[1], date=r[2], title=r[3], detail=r[4], cm=r[5], rp=r[6], story=r[8], tech=TECH.get(r[0], ""),
              url=(GH + "/" + r[7]) if r[7] else EXTRA_URL.get(r[0], "")) for r in FULL]
 PITS = [4, 9, 13, 17, 21]  # a gap after these stages
 GOOMBAS = [2, 6, 11, 15, 19, 22]  # a bug patrols between these stage and the next

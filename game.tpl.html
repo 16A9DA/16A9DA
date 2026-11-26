@@ -134,8 +134,9 @@ function draw(){
  g.fillStyle=YEL;g.fillRect(0,0,W,34);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,31);
  txt('REPOS x'+String(rp).padStart(2,'0'),14,22,11,'left');txt('COMMITS '+String(cm).padStart(4,'0'),W/2,22,11,'center');txt('COINS x'+String(st.coins).padStart(2,'0')+(st.big?' · SUPER':''),W-14,22,11,'right');
  g.fillStyle=CREAM;g.fillRect(0,180,W,70);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,181.5,W-3,67);
- const s=S[st.cur];txt('▶ '+(s.date?s.date+' :: ':'')+s.title,14,206,11,'left');txt(s.detail,14,228,12.5,'left',false);
- txt(st.falls?'TRIES '+(st.falls+1):'run →  jump  bump blocks',W-14,243,9,'right');
+ const s=S[st.cur],T=!!s.tech;txt('▶ '+(s.date?s.date+' :: ':'')+s.title,14,T?198:206,11,'left');txt(s.detail,14,T?216:228,12.5,'left',false);
+ if(T)txt('STACK: '+s.tech,14,236,10.5,'left',true,'#B04A3F');
+ if(st.falls)txt('TRIES '+(st.falls+1),W-14,198,9,'right');
  if(st.msgT>0){g.fillStyle='rgba(26,26,26,.78)';g.fillRect(0,34,W,146);txt('TRY AGAIN',W/2,92,26,'center',true,YEL);txt(st.msg[0],W/2,122,13,'center',false,CREAM);txt(st.msg[1],W/2,142,13,'center',false,CREAM);txt('back to your last checkpoint…',W/2,166,10,'center',true,PINK)}
  if(st.won){g.fillStyle='rgba(26,26,26,.7)';g.fillRect(0,34,W,146);txt('COURSE CLEAR!',W/2,100,26,'center',true,YEL);txt('Press ENTER / tap to play again',W/2,130,12,'center',true,CREAM)}
 }
