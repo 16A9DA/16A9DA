@@ -198,8 +198,39 @@ import json
 URLS = {"JobFind": GH + "/Job-Finder", "sol": GH + "/sol", "NEVERMISS": GH + "/NEVERMISSAI", "Lineage": GH + "/lineage-revocation",
         "rove": GH + "/rove", "RESET": GH + "/RESET", "InnerScript": "https://innerscript.ca/", "BMW": "https://linkedin.com/in/16a9da",
         "CO-OP": "https://linkedin.com/in/16a9da"}
-data = [dict(label=a, kind=b, date=c, title=d, detail=f, cm=g, rp=h, url=URLS.get(a, "")) for a, b, c, d, f, g, h in S] if False else \
-       [dict(label=r[0], kind=r[1], date=r[2], title=r[3], detail=r[4], cm=r[5], rp=r[6], url=URLS.get(r[0], "")) for r in S]
+# Full chronological level for the playable game: every public repo (private ones are never listed).
+FULL = [  # label, kind, date, title, detail, commits, repos, github repo
+ ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0, 0, ""),
+ ("MovieNLP", "repo", "NOV 2025", "Movie-Sentiment", "NLP project: movie review sentiment classification", 29, 1, "Movie-Sentiment"),
+ ("CS50AI", "repo", "DEC 2025", "CS50AI", "Harvard CS50 AI course projects", 5, 1, "CS50AI"),
+ ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 1, 1, "Job-Finder"),
+ ("Studdy", "repo", "MAR 2026", "StuddyBuddy", "Collaborative study platform", 6, 1, "StuddyBuddy"),
+ ("DataSci", "repo", "APR 2026", "Data-Science", "Data science portfolio: projects & notebooks", 12, 1, "Data-Science"),
+ ("Claude", "repo", "APR 2026", "Claude", "Claude Code internals: features, hooks, optimization", 3, 1, "Claude"),
+ ("P2Exploit", "repo", "MAY 2026", "Prompt2Exploit", "Security study: AI-written vs human-written web apps", 1, 1, "Prompt2Exploit"),
+ ("SensML", "repo", "MAY 2026", "predictive-maintenance", "10k sensor anomaly pipeline; GBDT F1 0.68 on 3.4% failures", 16, 1, "predictive-maintenance-failure-detection"),
+ ("Portfolio", "repo", "MAY 2026", "me", "Personal portfolio website", 28, 1, "me"),
+ ("WidgetAI", "repo", "JUN 2026", "WidgetAI", "Desktop widget: many AI providers from one place", 17, 1, "WidgetAI"),
+ ("sol", "repo", "JUN 2026", "sol", "Local-first open-source AI coding assistant, council + RAG", 72, 1, "sol"),
+ ("InnerScript", "mile", "JUL 2026", "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "Built a mental-health community platform: 8000+ users/followers", 0, 0, ""),
+ ("Orbit", "repo", "JUL 2026", "Orbit", "All-in-one AI dashboard: APIs, billing, alerts, automation", 43, 1, "Orbit"),
+ ("NEVERMISS", "mile", "JUL 2026", "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", 16, 1, "NEVERMISSAI"),
+ ("WA-Router", "repo", "AUG 2026", "whatsapp-notification-router", "HackerRank Orchestrate: OCR + speech + RAG + LLM routing", 2, 1, "whatsapp-notification-router"),
+ ("dlml", "repo", "AUG 2026", "dlml", "PyTorch notebooks: neural nets, training, deep learning", 7, 1, "dlml"),
+ ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Research: COSE_Sign1 + RFC 8949 CBOR delegation revocation verifier", 64, 1, "lineage-revocation"),
+ ("Research", "repo", "AUG 2026", "researchAgent", "Local LLM research agent", 9, 1, "researchAgent"),
+ ("bot", "repo", "SEP 2026", "bot", "Python bot", 30, 1, "bot"),
+ ("offline", "repo", "SEP 2026", "offline", "Self-hosted AI companion: chat, documents, memory, automation", 20, 1, "offline"),
+ ("rove", "repo", "SEP 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 59, 1, "rove"),
+ ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "System design · LangChain · agentic AI in production", 0, 0, ""),
+ ("AgentNotes", "repo", "OCT 2026", "AgenticNotes", "Agentic AI theory notes", 4, 1, "AgenticNotes"),
+ ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 104, 1, "RESET"),
+ ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0, ""),
+]
+EXTRA_URL = {"InnerScript": "https://innerscript.ca/", "BMW": "https://linkedin.com/in/16a9da", "CO-OP": "https://linkedin.com/in/16a9da"}
+data = [dict(label=r[0], kind=r[1], date=r[2], title=r[3], detail=r[4], cm=r[5], rp=r[6],
+             url=(GH + "/" + r[7]) if r[7] else EXTRA_URL.get(r[0], "")) for r in FULL]
+PITS = [4, 9, 13, 18, 22]  # a gap after these stages
 GAME = r"""<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <title>Rayyan Ahmed · Play my résumé</title>
@@ -228,7 +259,7 @@ a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)
 <script>
 const S=__DATA__;
 const cv=document.getElementById('c'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
-const W=640,GY=150,SP=130,PITAFTER=[1,3,5,7],COL=S.map((_,i)=>44+i*SP+50*PITAFTER.filter(k=>k<i).length),WORLD=COL[COL.length-1]+120,N=S.length;
+const W=640,GY=150,SP=130,PITAFTER=__PITS__,COL=S.map((_,i)=>44+i*SP+50*PITAFTER.filter(k=>k<i).length),WORLD=COL[COL.length-1]+120,N=S.length;
 const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
 const SPR=%SPRITE%,PAL=%PALETTE%;
 const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
@@ -314,4 +345,4 @@ requestAnimationFrame(loop);
 """
 sprite_js = json.dumps(MARIO_SPRITE)
 Path(__file__).with_name("index.html").write_text(
-    GAME.replace("__DATA__", json.dumps(data)).replace("%SPRITE%", sprite_js).replace("%PALETTE%", json.dumps(PALETTE)), encoding="utf-8")
+    GAME.replace("__DATA__", json.dumps(data)).replace("__PITS__", json.dumps(PITS)).replace("%SPRITE%", sprite_js).replace("%PALETTE%", json.dumps(PALETTE)), encoding="utf-8")
