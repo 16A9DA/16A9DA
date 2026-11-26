@@ -148,3 +148,34 @@ svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="{
 '''
 Path(__file__).with_name("mario-run.svg").write_text(svg, encoding="utf-8")
 print(N, "stages", commits, "commits", repos, "repos", len(svg), "bytes")
+
+# ---- clickable retro buttons (GitHub can't click inside an <img> SVG) + README ----
+GH = "https://github.com/16A9DA/"
+BTNS = [  # row, file, text, fill, url
+ (0, "jobfinder", "Job-Finder", "#F5D87A", GH + "Job-Finder"),
+ (0, "sol", "sol", "#F5D87A", GH + "sol"),
+ (0, "nevermissai", "NEVERMISSAI", "#F5D87A", GH + "NEVERMISSAI"),
+ (0, "lineage", "lineage-revocation", "#F5D87A", GH + "lineage-revocation"),
+ (0, "rove", "rove", "#F5D87A", GH + "rove"),
+ (0, "reset", "RESET", "#F5D87A", GH + "RESET"),
+ (1, "innerscript", "InnerScript", "#F2EDD7", "https://innerscript.ca/"),
+ (1, "linkedin", "LinkedIn", "#E8857A", "https://linkedin.com/in/16a9da"),
+ (1, "email", "Email", "#E8857A", "mailto:rayyan.tanweer@gmail.com"),
+ (1, "discord", "Discord", "#E8857A", "https://discordapp.com/users/584487184141254731"),
+]
+out = Path(__file__).with_name("btn")
+out.mkdir(exist_ok=True)
+rows = {0: [], 1: []}
+for row, name, text, fill, url in BTNS:
+    w, h = len(text) * 7 + 30, 34
+    (out / f"{name}.svg").write_text(
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 4}" height="{h + 4}" viewBox="0 0 {w + 4} {h + 4}" role="img" aria-label="{e(text)}">'
+        f'<rect x="4" y="4" width="{w}" height="{h}" fill="#1A1A1A"/>'
+        f'<rect x="1.5" y="1.5" width="{w - 3}" height="{h - 3}" fill="{fill}" stroke="#1A1A1A" stroke-width="3"/>'
+        f'<text x="{w / 2}" y="{h / 2 + 4.5}" text-anchor="middle" fill="#1A1A1A" '
+        f'style="font:800 12px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text></svg>\n', encoding="utf-8")
+    rows[row].append(f'<a href="{url}"><img src="./btn/{name}.svg" alt="{e(text)}" height="38" /></a>')
+Path(__file__).with_name("README.md").write_text(
+    '<div align="center">\n\n'
+    f'<a href="https://github.com/16A9DA?tab=repositories"><img src="./mario-run.svg" alt="Rayyan Ahmed: Mario runs from CS at University of Debrecen through Job-Finder, sol, InnerScript, NEVERMISSAI (Kanz AI gold), lineage-revocation, rove, BMW (Agentic AI Intern, Oct 2026) and RESET to the co-op flag" width="800" /></a>\n\n'
+    + "\n".join(rows[0]) + "\n\n" + "\n".join(rows[1]) + "\n\n</div>\n", encoding="utf-8")
