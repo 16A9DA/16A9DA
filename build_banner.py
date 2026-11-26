@@ -28,15 +28,16 @@ PALETTE = {
 }
 
 # (label, kind, date, title, detail, commits)  kind: start | repo | mile | pipe | flag
-S = [  # repos/commits roll up everything created since the previous stop
+S = [  # repos/commits roll up everything created since the previous stop (dlml not shown)
  ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0, 0),
  ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 35, 3),
  ("sol", "repo", "JUN 2026", "sol", "Local-first open-source AI coding assistant, council + RAG", 155, 8),
  ("InnerScript", "mile", "JUL 2026", "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "Built a mental-health community platform: 8000+ users/followers", 0, 0),
  ("NEVERMISS", "mile", "JUL 2026", "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", 59, 2),
- ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Research: COSE_Sign1 + RFC 8949 CBOR delegation revocation verifier", 73, 3),
- ("rove", "repo", "SEP 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 118, 4),
- ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "System design · LangChain · agentic AI in production", 0, 0),
+ ("Orchestrate", "repo", "AUG 2026", "HACKERRANK ORCHESTRATE :: 300 / 1800", "LLM competition: WhatsApp notification router (OCR + speech + RAG)", 2, 1),
+ ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Research: COSE_Sign1 + RFC 8949 CBOR delegation revocation verifier", 64, 1),
+ ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "Practice builds (researchAgent, bot, offline) led here", 59, 3),
+ ("rove", "repo", "OCT 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 59, 1),
  ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 108, 2),
  ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0),
 ]
@@ -199,150 +200,39 @@ URLS = {"JobFind": GH + "/Job-Finder", "sol": GH + "/sol", "NEVERMISS": GH + "/N
         "rove": GH + "/rove", "RESET": GH + "/RESET", "InnerScript": "https://innerscript.ca/", "BMW": "https://linkedin.com/in/16a9da",
         "CO-OP": "https://linkedin.com/in/16a9da"}
 # Full chronological level for the playable game: every public repo (private ones are never listed).
-FULL = [  # label, kind, date, title, detail, commits, repos, github repo
- ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0, 0, ""),
- ("MovieNLP", "repo", "NOV 2025", "Movie-Sentiment", "NLP project: movie review sentiment classification", 29, 1, "Movie-Sentiment"),
- ("CS50AI", "repo", "DEC 2025", "CS50AI", "Harvard CS50 AI course projects", 5, 1, "CS50AI"),
- ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 1, 1, "Job-Finder"),
- ("Studdy", "repo", "MAR 2026", "StuddyBuddy", "Collaborative study platform", 6, 1, "StuddyBuddy"),
- ("DataSci", "repo", "APR 2026", "Data-Science", "Data science portfolio: projects & notebooks", 12, 1, "Data-Science"),
- ("Claude", "repo", "APR 2026", "Claude", "Claude Code internals: features, hooks, optimization", 3, 1, "Claude"),
- ("P2Exploit", "repo", "MAY 2026", "Prompt2Exploit", "Security study: AI-written vs human-written web apps", 1, 1, "Prompt2Exploit"),
- ("SensML", "repo", "MAY 2026", "predictive-maintenance", "10k sensor anomaly pipeline; GBDT F1 0.68 on 3.4% failures", 16, 1, "predictive-maintenance-failure-detection"),
- ("Portfolio", "repo", "MAY 2026", "me", "Personal portfolio website", 28, 1, "me"),
- ("WidgetAI", "repo", "JUN 2026", "WidgetAI", "Desktop widget: many AI providers from one place", 17, 1, "WidgetAI"),
- ("sol", "repo", "JUN 2026", "sol", "Local-first open-source AI coding assistant, council + RAG", 72, 1, "sol"),
- ("InnerScript", "mile", "JUL 2026", "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "Built a mental-health community platform: 8000+ users/followers", 0, 0, ""),
- ("Orbit", "repo", "JUL 2026", "Orbit", "All-in-one AI dashboard: APIs, billing, alerts, automation", 43, 1, "Orbit"),
- ("NEVERMISS", "mile", "JUL 2026", "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", 16, 1, "NEVERMISSAI"),
- ("WA-Router", "repo", "AUG 2026", "whatsapp-notification-router", "HackerRank Orchestrate: OCR + speech + RAG + LLM routing", 2, 1, "whatsapp-notification-router"),
- ("dlml", "repo", "AUG 2026", "dlml", "PyTorch notebooks: neural nets, training, deep learning", 7, 1, "dlml"),
- ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Research: COSE_Sign1 + RFC 8949 CBOR delegation revocation verifier", 64, 1, "lineage-revocation"),
- ("Research", "repo", "AUG 2026", "researchAgent", "Local LLM research agent", 9, 1, "researchAgent"),
- ("bot", "repo", "SEP 2026", "bot", "Python bot", 30, 1, "bot"),
- ("offline", "repo", "SEP 2026", "offline", "Self-hosted AI companion: chat, documents, memory, automation", 20, 1, "offline"),
- ("rove", "repo", "SEP 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 59, 1, "rove"),
- ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "System design · LangChain · agentic AI in production", 0, 0, ""),
- ("AgentNotes", "repo", "OCT 2026", "AgenticNotes", "Agentic AI theory notes", 4, 1, "AgenticNotes"),
- ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 104, 1, "RESET"),
- ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0, ""),
+FULL = [  # label, kind, date, title, detail, commits, repos, github repo, story
+ ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0, 0, "", "Everything below was learned, built and shipped from here."),
+ ("MovieNLP", "repo", "NOV 2025", "Movie-Sentiment", "NLP project: movie review sentiment classification", 29, 1, "Movie-Sentiment", "First ML project: getting hands-on with NLP."),
+ ("CS50AI", "repo", "DEC 2025", "CS50AI", "Harvard CS50 AI course projects", 5, 1, "CS50AI", "Course learning: the stepping stone to Job-Finder."),
+ ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 1, 1, "Job-Finder", "Built with what CS50AI taught me."),
+ ("Studdy", "repo", "MAR 2026", "StuddyBuddy", "Collaborative study platform", 6, 1, "StuddyBuddy", "Where I learned how to build websites."),
+ ("DataSci", "repo", "APR 2026", "Data-Science", "Data science portfolio: projects & notebooks", 12, 1, "Data-Science", "Learned data science here, then put it to work."),
+ ("Claude", "repo", "APR 2026", "Claude", "Learning Claude Code: features, hooks, optimization", 3, 1, "Claude", "Understanding the tools I build with."),
+ ("P2Exploit", "repo", "MAY 2026", "Prompt2Exploit", "Security study: AI-written vs human-written web apps", 1, 1, "Prompt2Exploit", "Data science applied to AI security."),
+ ("SensML", "repo", "MAY 2026", "predictive-maintenance", "10k sensor anomaly pipeline; GBDT F1 0.68 on 3.4% failures", 16, 1, "predictive-maintenance-failure-detection", "Data science applied to machine failure."),
+ ("Portfolio", "repo", "MAY 2026", "me", "My personal portfolio website", 28, 1, "me", "Built with the web skills from StuddyBuddy."),
+ ("WidgetAI", "repo", "JUN 2026", "WidgetAI", "Desktop widget: many AI providers from one place", 17, 1, "WidgetAI", "A warm-up for building sol."),
+ ("sol", "repo", "JUN 2026", "sol", "Local-first open-source AI coding assistant, council + RAG", 72, 1, "sol", "The real build, after WidgetAI."),
+ ("InnerScript", "mile", "JUL 2026", "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "Mental-health community platform: 8000+ users/followers", 0, 0, "", "I built the whole website myself."),
+ ("Orbit", "repo", "JUL 2026", "Orbit", "All-in-one AI dashboard: APIs, billing, alerts, automation", 43, 1, "Orbit", "Built to monitor my website's costs and usage."),
+ ("NEVERMISS", "mile", "JUL 2026", "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", 16, 1, "NEVERMISSAI", "Possible because of everything I learned on Orbit."),
+ ("Orchestr.", "mile", "AUG 2026", "HACKERRANK ORCHESTRATE :: 300 / 1800", "LLM competition: WhatsApp notification router (OCR, speech, RAG, LLM)", 2, 1, "whatsapp-notification-router", "Placed 300th out of 1,800 participants."),
+ ("Lineage", "repo", "AUG 2026", "lineage-revocation", "Research: COSE_Sign1 + RFC 8949 CBOR delegation revocation verifier", 64, 1, "lineage-revocation", "Research out of curiosity about agentic AI security."),
+ ("Research", "repo", "AUG 2026", "researchAgent", "Local LLM research agent", 9, 1, "researchAgent", "Practice build to get sharper."),
+ ("bot", "repo", "SEP 2026", "bot", "Python bot", 30, 1, "bot", "Practice build to get sharper."),
+ ("offline", "repo", "SEP 2026", "offline", "Self-hosted AI companion: chat, documents, memory, automation", 20, 1, "offline", "Practice build. Proficiency that led to BMW."),
+ ("BMW", "mile", "1 OCT 2026", "JOINED BMW :: AGENTIC AI INTERN", "System design · LangChain · agentic AI in production", 0, 0, "", "All that practice paid off."),
+ ("rove", "repo", "SEP-OCT 2026", "rove", "macOS computer-use agent: specialists, voice, approval gates", 59, 1, "rove", "Built after joining BMW."),
+ ("AgentNotes", "repo", "OCT 2026", "AgenticNotes", "Agentic AI theory notes", 4, 1, "AgenticNotes", "My contribution to the Generative AI class, shared by my professor."),
+ ("RESET", "pipe", "OCT 2026", "RESET", "Local-first AI health app (SwiftUI + SwiftData)", 104, 1, "RESET", "Built after joining BMW."),
+ ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0, "", "Thanks for playing through the story."),
 ]
 EXTRA_URL = {"InnerScript": "https://innerscript.ca/", "BMW": "https://linkedin.com/in/16a9da", "CO-OP": "https://linkedin.com/in/16a9da"}
-data = [dict(label=r[0], kind=r[1], date=r[2], title=r[3], detail=r[4], cm=r[5], rp=r[6],
+data = [dict(label=r[0], kind=r[1], date=r[2], title=r[3], detail=r[4], cm=r[5], rp=r[6], story=r[8],
              url=(GH + "/" + r[7]) if r[7] else EXTRA_URL.get(r[0], "")) for r in FULL]
-PITS = [4, 9, 13, 18, 22]  # a gap after these stages
-GAME = r"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-<title>Rayyan Ahmed · Play my résumé</title>
-<style>
-:root{--ink:#1A1A1A;--cream:#F2EDD7;--yel:#F5D87A;--pink:#E8857A;--sky:#6ECFCF}
-*{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--cream);font-family:ui-monospace,Menlo,Consolas,monospace}
-body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:12px;touch-action:manipulation}
-h1{margin:0;font-size:clamp(20px,3.2vw,34px);letter-spacing:.12em;color:var(--yel);text-shadow:3px 3px 0 var(--pink)}#sub{margin:0;font-size:clamp(11px,1.4vw,15px);opacity:.85;text-align:center}
-#wrap{width:640px}canvas{display:block;width:100%;height:auto;border:4px solid var(--cream);box-shadow:8px 8px 0 #000;background:var(--sky)}
-.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
-a.b,button{font:800 14px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--yel);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--cream);padding:12px 22px;text-decoration:none;cursor:pointer;user-select:none;-webkit-user-select:none}
-a.b:active,button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--cream)}
-a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)}
-#pad{display:none;gap:14px}@media (pointer:coarse){#pad{display:flex}}#pad button{font-size:22px;padding:14px 26px}
-#hint{font-size:12px;opacity:.75;text-align:center}#open{display:none}
-</style></head><body>
-<h1>RAYYAN AHMED</h1><p id="sub">Agentic AI Intern @ BMW · CS @ University of Debrecen</p>
-<div id="wrap"><canvas id="c" width="640" height="250"></canvas></div>
-<div id="hint">← → move · ↑ / SPACE jump · hop from block to block · mind the pits, small stones help · reach the flag</div>
-<div class="row" id="pad"><button id="L">◀</button><button id="J">▲</button><button id="R">▶</button></div>
-<div class="row"><a class="b" id="open" target="_blank" rel="noopener">OPEN ↗</a>
-<a class="b" href="https://linkedin.com/in/16a9da" target="_blank" rel="noopener">LinkedIn</a>
-<a class="b p" href="mailto:rayyan.tanweer@gmail.com">Email</a>
-<a class="b c" href="https://discordapp.com/users/584487184141254731" target="_blank" rel="noopener">Discord</a>
-<a class="b s" href="https://github.com/16A9DA?tab=repositories" target="_blank" rel="noopener">GitHub</a></div>
-<script>
-const S=__DATA__;
-const cv=document.getElementById('c'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
-const W=640,GY=150,SP=130,PITAFTER=__PITS__,COL=S.map((_,i)=>44+i*SP+50*PITAFTER.filter(k=>k<i).length),WORLD=COL[COL.length-1]+120,N=S.length;
-const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
-const SPR=%SPRITE%,PAL=%PALETTE%;
-const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
-const BLK=[];{let k=0;S.forEach((s,i)=>{if(s.kind==='repo'||s.kind==='mile'){BLK.push({i,cx:COL[i],w:s.kind==='mile'?40:30,top:k%2?62:78});k++}})}
-const BH=28,PW=9,PH=42;
-const PITS=PITAFTER.map(i=>({x0:COL[i]+40,x1:COL[i+1]-50,cx:(COL[i]+COL[i+1])/2}));
-const STONES=PITS.map(p=>({cx:p.cx,w:16,top:126}));
-const inPit=x=>PITS.some(p=>x>p.x0&&x<p.x1);
-const MSG=[["Missed it. Every big project started small.","Grab a small win and climb back up."],["Failed a project? That's a draft, not the end.","Ship something small, then go again."],["Falling is part of the run.","The small stones got you here before."],["You've rebuilt from small wins before.","Do it again, one hop at a time."]];
-const keys={};let st,K=1;
-function fit(){const hh=document.querySelector('h1').offsetHeight+document.getElementById('sub').offsetHeight+document.getElementById('hint').offsetHeight+(innerWidth<700?150:90)+60;
- const w=Math.max(320,Math.min(innerWidth-28,1040,(innerHeight-hh)*W/250));document.getElementById('wrap').style.width=w+'px';
- const d=Math.min(devicePixelRatio||1,3);K=w*d/W;cv.width=Math.round(W*K);cv.height=Math.round(250*K);g.setTransform(K,0,0,K,0,0);g.imageSmoothingEnabled=false}
-addEventListener('resize',fit);
-function reset(){st={x:COL[0],y:GY,vy:0,gr:true,ck:0,falls:0,msgT:0,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
-reset();
-addEventListener('keydown',e=>{const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys[k.toLowerCase()]=1;if(st.won&&(k==='Enter'||k===' '))reset()});
-addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=0});
-for(const [id,k] of [['L','arrowleft'],['R','arrowright'],['J','arrowup']]){const b=document.getElementById(id);
- const on=e=>{e.preventDefault();keys[k]=1},off=e=>{e.preventDefault();keys[k]=0};
- b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)}
-cv.addEventListener('pointerdown',()=>{if(st.won)reset()});
-const open=document.getElementById('open');
-function setCur(i){if(st.cur===i&&open.href)return;st.cur=i;const u=S[i].url;if(u){open.style.display='';open.href=u;open.textContent=(S[i].kind==='repo'||S[i].kind==='pipe'?'OPEN '+S[i].title.toUpperCase():'VISIT')+' ↗'}else open.style.display='none'}
-setCur(0);fit();
-function trigger(i){st.ck=i;if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:(BLK.find(b=>b.i===i)||{top:70}).top-8,t:0})}setCur(i)}
-let last=performance.now();
-function step(dt){
- if(st.msgT>0){st.msgT-=dt;if(st.msgT<=0){let ck=st.ck;while(ck>0&&!(S[ck].kind==='repo'||S[ck].kind==='mile'||S[ck].kind==='start'))ck--;st.x=COL[ck];st.y=GY;st.vy=0;st.gr=true;setCur(ck)}return}
- const L=keys.arrowleft||keys.a,R=keys.arrowright||keys.d,J=keys.arrowup||keys.w||keys[' '];
- const v=(R?1:0)-(L?1:0),px0=st.x;st.x=Math.min(Math.max(st.x+v*175*dt,20),WORLD-40);if(v)st.face=v;
- // sideways: blocks are solid
- for(const b of BLK){const bot=b.top+BH;if(st.y>b.top+1&&st.y-PH<bot-1&&Math.abs(st.x-b.cx)<b.w/2+PW)st.x=b.cx+(px0<b.cx?-1:1)*(b.w/2+PW)}
- if(J&&st.gr&&!st.won){st.vy=-500}
- const py=st.y;st.vy+=1250*dt;st.y+=st.vy*dt;st.gr=false;
- for(const b of BLK){const bot=b.top+BH;if(Math.abs(st.x-b.cx)>=b.w/2+PW-1)continue;
-  if(st.vy>=0&&py<=b.top+.5&&st.y>=b.top){st.y=b.top;st.vy=0;st.gr=true;trigger(b.i)}
-  else if(st.vy<0&&py-PH>=bot-.5&&st.y-PH<bot){st.y=bot+PH;st.vy=40;st.bump[b.i]=.25;trigger(b.i)}}
- for(const o of STONES){if(Math.abs(st.x-o.cx)<o.w/2+PW&&st.vy>=0&&py<=o.top+.5&&st.y>=o.top){st.y=o.top;st.vy=0;st.gr=true}}
- if(st.y>=GY&&!inPit(st.x)){st.y=GY;st.vy=0;st.gr=true}
- if(st.y>GY+75){st.falls++;st.msgT=3.2;st.msg=MSG[(st.falls-1)%MSG.length]}
- S.forEach((s,i)=>{if(!(s.kind==='repo'||s.kind==='mile')&&Math.abs(st.x-COL[i])<26)trigger(i)});
- if(S[st.cur].kind==='flag'&&Math.abs(st.x-COL[N-1])<26)st.won=true;
- for(const k in st.bump){st.bump[k]-=dt;if(st.bump[k]<=0)delete st.bump[k]}
- st.coins.forEach(c=>c.t+=dt);st.coins=st.coins.filter(c=>c.t<.7);st.t+=dt}
-function box(x,y,w,h,f){g.fillStyle=INK;g.fillRect(x+3,y+3,w,h);g.fillStyle=f;g.fillRect(x,y,w,h);g.strokeStyle=INK;g.lineWidth=2.5;g.strokeRect(x,y,w,h)}
-function txt(s,x,y,sz,al,mono=true,c=INK){g.fillStyle=c;g.textAlign=al;g.font=(mono?'800 ':'600 ')+sz+'px '+(mono?'ui-monospace,Menlo,Consolas,monospace':'-apple-system,Segoe UI,Helvetica,Arial,sans-serif');g.fillText(s,x,y)}
-function draw(){
- g.setTransform(K,0,0,K,0,0);g.fillStyle=SKY;g.fillRect(0,0,W,250);
- const cam=Math.min(Math.max(st.x-190,0),WORLD-W);
- g.save();g.beginPath();g.rect(0,0,W,GY+30);g.clip();g.translate(-cam,0);
- for(let x=120;x<WORLD+400;x+=310){g.fillStyle=CREAM;g.strokeStyle=INK;g.lineWidth=2;g.fillRect(x,48,42,10);g.strokeRect(x,48,42,10);g.fillRect(x+10,42,22,8);g.strokeRect(x+10,42,22,8)}
- const segs=[];{let a=cam-8;for(const p of PITS){if(p.x1<a||p.x0>cam+W+8)continue;if(p.x0>a)segs.push([a,p.x0]);a=p.x1}segs.push([a,cam+W+8])}
- for(const [a,b] of segs){g.fillStyle=PINK;g.fillRect(a,GY,b-a,22);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(a,GY,b-a,22);
-  g.lineWidth=2;g.globalAlpha=.35;for(let x=Math.ceil(a/40)*40;x<b;x+=40){g.beginPath();g.moveTo(x+4,GY);g.lineTo(x+4,GY+22);g.stroke()}g.globalAlpha=1}
- for(const p of PITS){g.fillStyle=INK;g.fillRect(p.x0,GY+3,p.x1-p.x0,22)}
- for(const o of STONES){box(o.cx-o.w/2,o.top,o.w,12,YEL);txt('small win',o.cx,o.top-5,7.5,'center')}
- S.forEach((s,i)=>{const cx=COL[i],hit=st.hit.has(i);
-  if(s.kind==='repo'||s.kind==='mile'){const B=BLK.find(b=>b.i===i),w=B.w,by=B.top-(st.bump[i]?Math.sin(st.bump[i]/.25*Math.PI)*6:0);
-   box(cx-w/2,by,w,28,hit?PINK:YEL);txt(s.kind==='mile'?'★':(hit?'!':'?'),cx,by+21,15,'center');txt(s.label,cx,B.top-6,8.5,'center')}
-  else if(s.kind==='start'){box(cx-22,84,44,22,CREAM);txt(s.label,cx,99,10,'center')}
-  else if(s.kind==='pipe'){box(cx-20,118,40,11,YEL);box(cx-15,129,30,GY-129,YEL);txt(s.label,cx,111,8.5,'center')}
-  else{g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(cx,66);g.lineTo(cx,GY);g.stroke();g.fillStyle=YEL;g.beginPath();g.arc(cx,64,5,0,7);g.fill();g.stroke();
-   const wv=1-.3*Math.abs(Math.sin(st.t*4));g.fillStyle=PINK;g.beginPath();g.moveTo(cx,70);g.lineTo(cx-28*wv,81);g.lineTo(cx,92);g.closePath();g.fill();g.lineWidth=2;g.stroke();txt(s.label,cx,56,8.5,'center')}
-  g.fillStyle=hit?YEL:CREAM;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(cx,GY+11,4,0,7);g.fill();g.stroke()});
- st.coins.forEach(c=>{g.fillStyle=YEL;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(c.x,c.y-c.t*60,6,0,7);g.fill();g.stroke()});
-g.restore();
- // HUD
- let cm=0,rp=0;st.hit.forEach(i=>{cm+=S[i].cm;rp+=S[i].rp});
- g.fillStyle=YEL;g.fillRect(0,0,W,34);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,31);
- txt('STAGE '+String(st.cur).padStart(2,'0')+'/'+(N-1),14,22,11,'left');txt('REPOS x'+String(rp).padStart(2,'0'),W/2,22,11,'center');txt('COMMITS '+String(cm).padStart(4,'0'),W-14,22,11,'right');
- g.save();g.translate(-cam,0);g.translate(st.x,st.y);g.scale(st.face,1);g.drawImage(sp,-18,-42);g.restore();
- // panel
- g.fillStyle=CREAM;g.fillRect(0,180,W,70);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,181.5,W-3,67);
- const s=S[st.cur];txt('▶ '+(s.date?s.date+' :: ':'')+s.title,14,206,11,'left');txt(s.detail,14,228,12.5,'left',false);
- txt(st.falls?'FALLS '+st.falls+' · small wins keep you moving':(st.hit.has(1)?'mind the pits · small stones help you across':'Run →  jump onto the blocks'),W-14,243,10,'right');
- if(st.msgT>0){g.fillStyle='rgba(26,26,26,.78)';g.fillRect(0,34,W,146);txt('TRY AGAIN',W/2,92,26,'center',true,YEL);txt(st.msg[0],W/2,122,13,'center',false,CREAM);txt(st.msg[1],W/2,142,13,'center',false,CREAM);txt('respawning at your last checkpoint…',W/2,166,10,'center',true,PINK)}
- if(st.won){g.fillStyle='rgba(26,26,26,.7)';g.fillRect(0,34,W,146);txt('COURSE CLEAR!',W/2,100,26,'center',true,YEL);txt('Press ENTER / tap to play again',W/2,130,12,'center',true,CREAM)}
-}
-function loop(n){const dt=Math.min((n-last)/1000,.05);last=n;step(dt);draw();requestAnimationFrame(loop)}
-requestAnimationFrame(loop);
-</script></body></html>
-"""
+PITS = [4, 9, 13, 17, 21]  # a gap after these stages
+GOOMBAS = [2, 6, 11, 15, 19, 22]  # a bug patrols between these stage and the next
+GAME = Path(__file__).with_name("game.tpl.html").read_text(encoding="utf-8")
 sprite_js = json.dumps(MARIO_SPRITE)
 Path(__file__).with_name("index.html").write_text(
-    GAME.replace("__DATA__", json.dumps(data)).replace("__PITS__", json.dumps(PITS)).replace("%SPRITE%", sprite_js).replace("%PALETTE%", json.dumps(PALETTE)), encoding="utf-8")
+    GAME.replace("__DATA__", json.dumps(data)).replace("__PITS__", json.dumps(PITS)).replace("__GOOMBAS__", json.dumps(GOOMBAS)).replace("%SPRITE%", sprite_js).replace("%PALETTE%", json.dumps(PALETTE)), encoding="utf-8")
