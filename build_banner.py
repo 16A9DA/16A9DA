@@ -160,10 +160,13 @@ ICONS = {  # 20x20 glyphs on the dark tile
  "discord": (f'<rect x="0" y="5" width="20" height="11" fill="{C}"/><rect x="2" y="3" width="16" height="2" fill="{C}"/>'
              '<rect x="3" y="9" width="5" height="2" fill="#1A1A1A"/><rect x="4.5" y="7.5" width="2" height="5" fill="#1A1A1A"/>'
              '<rect x="12" y="8" width="2.5" height="2.5" fill="#1A1A1A"/><rect x="15.5" y="10.5" width="2.5" height="2.5" fill="#1A1A1A"/>'),
+ "play": f'<text x="10" y="16" {T % (C, 17)}>▶</text>',
  "github": f'<text x="10" y="16" {T % (C, 15)}>&gt;_</text>',
 }
 GH = "https://github.com/16A9DA"
+PAGES = "https://16a9da.github.io/16A9DA/"
 BTNS = [  # file, text, fill, url
+ ("play", "PLAY", "#E8857A", PAGES),
  ("linkedin", "LinkedIn", "#F5D87A", "https://linkedin.com/in/16a9da"),
  ("email", "Email", "#E8857A", "mailto:rayyan.tanweer@gmail.com"),
  ("discord", "Discord", "#F2EDD7", "https://discordapp.com/users/584487184141254731"),
@@ -189,3 +192,104 @@ Path(__file__).with_name("README.md").write_text(
     '<div align="center">\n\n'
     f'<a href="{GH}?tab=repositories"><img src="./mario-run.svg" alt="Rayyan Ahmed: Mario runs from CS at University of Debrecen through Job-Finder, sol, InnerScript, NEVERMISSAI (Kanz AI gold), lineage-revocation, rove, BMW (Agentic AI Intern, Oct 2026) and RESET to the co-op flag" width="800" /></a>\n\n'
     + "&nbsp;\n".join(links) + "\n\n</div>\n", encoding="utf-8")
+
+# ---- playable version (GitHub Pages): arrows / WASD / touch ----
+import json
+URLS = {"JobFind": GH + "/Job-Finder", "sol": GH + "/sol", "NEVERMISS": GH + "/NEVERMISSAI", "Lineage": GH + "/lineage-revocation",
+        "rove": GH + "/rove", "RESET": GH + "/RESET", "InnerScript": "https://innerscript.ca/", "BMW": "https://linkedin.com/in/16a9da",
+        "CO-OP": "https://linkedin.com/in/16a9da"}
+data = [dict(label=a, kind=b, date=c, title=d, detail=f, cm=g, rp=h, url=URLS.get(a, "")) for a, b, c, d, f, g, h in S] if False else \
+       [dict(label=r[0], kind=r[1], date=r[2], title=r[3], detail=r[4], cm=r[5], rp=r[6], url=URLS.get(r[0], "")) for r in S]
+GAME = r"""<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Rayyan Ahmed · Play my résumé</title>
+<style>
+:root{--ink:#1A1A1A;--cream:#F2EDD7;--yel:#F5D87A;--pink:#E8857A;--sky:#6ECFCF}
+*{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--cream);font-family:ui-monospace,Menlo,Consolas,monospace}
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:12px;touch-action:manipulation}
+#wrap{width:min(100%,960px)}canvas{display:block;width:100%;image-rendering:pixelated;border:3px solid var(--cream);background:var(--sky)}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+a.b,button{font:800 14px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--yel);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--cream);padding:10px 16px;text-decoration:none;cursor:pointer;user-select:none;-webkit-user-select:none}
+a.b:active,button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--cream)}
+a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)}
+#pad{display:none;gap:14px}@media (pointer:coarse){#pad{display:flex}}#pad button{font-size:22px;padding:14px 26px}
+#hint{font-size:12px;opacity:.75;text-align:center}#open{display:none}
+</style></head><body>
+<div id="wrap"><canvas id="c" width="640" height="250"></canvas></div>
+<div id="hint">← → move · ↑ / SPACE jump · bump the ★ and ? blocks from below · reach the flag</div>
+<div class="row" id="pad"><button id="L">◀</button><button id="J">▲</button><button id="R">▶</button></div>
+<div class="row"><a class="b" id="open" target="_blank" rel="noopener">OPEN ↗</a>
+<a class="b" href="https://linkedin.com/in/16a9da" target="_blank" rel="noopener">LinkedIn</a>
+<a class="b p" href="mailto:rayyan.tanweer@gmail.com">Email</a>
+<a class="b c" href="https://discordapp.com/users/584487184141254731" target="_blank" rel="noopener">Discord</a>
+<a class="b s" href="https://github.com/16A9DA?tab=repositories" target="_blank" rel="noopener">GitHub</a></div>
+<script>
+const S=__DATA__;
+const cv=document.getElementById('c'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
+const W=640,GY=150,SP=96,COL=S.map((_,i)=>44+i*SP),WORLD=COL[COL.length-1]+120,N=S.length;
+const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
+const SPR=%SPRITE%,PAL=%PALETTE%;
+const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
+const keys={};let st;
+function reset(){st={x:COL[0],y:GY,vy:0,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
+reset();
+addEventListener('keydown',e=>{const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys[k.toLowerCase()]=1;if(st.won&&(k==='Enter'||k===' '))reset()});
+addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=0});
+for(const [id,k] of [['L','arrowleft'],['R','arrowright'],['J','arrowup']]){const b=document.getElementById(id);
+ const on=e=>{e.preventDefault();keys[k]=1},off=e=>{e.preventDefault();keys[k]=0};
+ b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)}
+cv.addEventListener('pointerdown',()=>{if(st.won)reset()});
+const open=document.getElementById('open');
+function setCur(i){if(st.cur===i&&open.href)return;st.cur=i;const u=S[i].url;if(u){open.style.display='';open.href=u;open.textContent=(S[i].kind==='repo'||S[i].kind==='pipe'?'OPEN '+S[i].title.toUpperCase():'VISIT')+' ↗'}else open.style.display='none'}
+setCur(0);
+function trigger(i){if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:70,t:0})}setCur(i)}
+let last=performance.now();
+function step(dt){
+ const L=keys.arrowleft||keys.a,R=keys.arrowright||keys.d,J=keys.arrowup||keys.w||keys[' '];
+ const v=(R?1:0)-(L?1:0);st.x=Math.min(Math.max(st.x+v*170*dt,20),WORLD-40);if(v)st.face=v;
+ const onG=st.y>=GY;if(J&&onG&&!st.won){st.vy=-400}
+ st.vy+=1250*dt;st.y+=st.vy*dt;if(st.y>=GY){st.y=GY;st.vy=0}
+ S.forEach((s,i)=>{const dx=Math.abs(st.x-COL[i]);
+  if(s.kind==='repo'||s.kind==='mile'){const w=s.kind==='mile'?20:15;
+   if(dx<w+6&&st.y-42<102&&st.y-42>60&&st.vy<0){st.y=102+42;st.vy=60;st.bump[i]=0.25;trigger(i)}}
+  else if(dx<26)trigger(i)});
+ if(S[st.cur].kind==='flag'&&Math.abs(st.x-COL[N-1])<26)st.won=true;
+ for(const k in st.bump){st.bump[k]-=dt;if(st.bump[k]<=0)delete st.bump[k]}
+ st.coins.forEach(c=>c.t+=dt);st.coins=st.coins.filter(c=>c.t<.7);st.t+=dt}
+function box(x,y,w,h,f){g.fillStyle=INK;g.fillRect(x+3,y+3,w,h);g.fillStyle=f;g.fillRect(x,y,w,h);g.strokeStyle=INK;g.lineWidth=2.5;g.strokeRect(x,y,w,h)}
+function txt(s,x,y,sz,al,mono=true,c=INK){g.fillStyle=c;g.textAlign=al;g.font=(mono?'800 ':'600 ')+sz+'px '+(mono?'ui-monospace,Menlo,Consolas,monospace':'-apple-system,Segoe UI,Helvetica,Arial,sans-serif');g.fillText(s,x,y)}
+function draw(){
+ g.fillStyle=SKY;g.fillRect(0,0,W,250);
+ const cam=Math.min(Math.max(st.x-190,0),WORLD-W);
+ g.save();g.beginPath();g.rect(0,0,W,GY+22);g.clip();g.translate(-cam,0);
+ for(let x=120;x<WORLD+400;x+=310){g.fillStyle=CREAM;g.strokeStyle=INK;g.lineWidth=2;g.fillRect(x,48,42,10);g.strokeRect(x,48,42,10);g.fillRect(x+10,42,22,8);g.strokeRect(x+10,42,22,8)}
+ g.fillStyle=PINK;g.fillRect(cam-8,GY,W+16,22);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(cam-8,GY,W+16,22);
+ g.lineWidth=2;g.globalAlpha=.35;for(let x=Math.floor(cam/40)*40;x<cam+W+40;x+=40){g.beginPath();g.moveTo(x+4,GY);g.lineTo(x+4,GY+22);g.stroke()}g.globalAlpha=1;
+ S.forEach((s,i)=>{const cx=COL[i],hit=st.hit.has(i);
+  if(s.kind==='repo'||s.kind==='mile'){const w=s.kind==='mile'?40:30,by=74-(st.bump[i]?Math.sin(st.bump[i]/.25*Math.PI)*6:0);
+   box(cx-w/2,by,w,28,hit?PINK:YEL);txt(s.kind==='mile'?'★':(hit?'!':'?'),cx,by+21,15,'center');txt(s.label,cx,68,8.5,'center')}
+  else if(s.kind==='start'){box(cx-22,84,44,22,CREAM);txt(s.label,cx,99,10,'center')}
+  else if(s.kind==='pipe'){box(cx-20,118,40,11,YEL);box(cx-15,129,30,GY-129,YEL);txt(s.label,cx,111,8.5,'center')}
+  else{g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(cx,66);g.lineTo(cx,GY);g.stroke();g.fillStyle=YEL;g.beginPath();g.arc(cx,64,5,0,7);g.fill();g.stroke();
+   const wv=1-.3*Math.abs(Math.sin(st.t*4));g.fillStyle=PINK;g.beginPath();g.moveTo(cx,70);g.lineTo(cx-28*wv,81);g.lineTo(cx,92);g.closePath();g.fill();g.lineWidth=2;g.stroke();txt(s.label,cx,56,8.5,'center')}
+  g.fillStyle=hit?YEL:CREAM;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(cx,GY+11,4,0,7);g.fill();g.stroke()});
+ st.coins.forEach(c=>{g.fillStyle=YEL;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(c.x,c.y-c.t*60,6,0,7);g.fill();g.stroke()});
+ g.save();g.translate(st.x,st.y);g.scale(st.face,1);g.drawImage(sp,-18,-42);g.restore();
+ g.restore();
+ // HUD
+ let cm=0,rp=0;st.hit.forEach(i=>{cm+=S[i].cm;rp+=S[i].rp});
+ g.fillStyle=YEL;g.fillRect(0,0,W,34);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,31);
+ txt('STAGE '+String(st.cur).padStart(2,'0')+'/'+(N-1),14,22,11,'left');txt('REPOS x'+String(rp).padStart(2,'0'),W/2,22,11,'center');txt('COMMITS '+String(cm).padStart(4,'0'),W-14,22,11,'right');
+ // panel
+ g.fillStyle=CREAM;g.fillRect(0,180,W,70);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,181.5,W-3,67);
+ const s=S[st.cur];txt('▶ '+(s.date?s.date+' :: ':'')+s.title,14,206,11,'left');txt(s.detail,14,228,12.5,'left',false);
+ if(!st.hit.has(1)&&st.cur===0)txt('Run →  then jump up under a block',W-14,243,10,'right');
+ if(st.won){g.fillStyle='rgba(26,26,26,.7)';g.fillRect(0,34,W,146);txt('COURSE CLEAR!',W/2,100,26,'center',true,YEL);txt('Press ENTER / tap to play again',W/2,130,12,'center',true,CREAM)}
+}
+function loop(n){const dt=Math.min((n-last)/1000,.05);last=n;step(dt);draw();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></body></html>
+"""
+sprite_js = json.dumps(MARIO_SPRITE)
+Path(__file__).with_name("index.html").write_text(
+    GAME.replace("__DATA__", json.dumps(data)).replace("%SPRITE%", sprite_js).replace("%PALETTE%", json.dumps(PALETTE)), encoding="utf-8")

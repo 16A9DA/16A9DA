@@ -1,634 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>World 1-1 // Rayyan Ahmed (16A9DA)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --cream: #F2EDD7;
-      --dark: #1A1A1A;
-      --cyan: #6ECFCF;
-      --yellow: #F5D87A;
-      --coral: #E8857A;
-      --pixel: 'Press Start 2P', ui-monospace, monospace;
-      --body: 'Space Grotesk', system-ui, sans-serif;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--cream);
-      color: var(--dark);
-      font-family: var(--body);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 1rem;
-      gap: .9rem;
-    }
-    .shell {
-      width: 100%;
-      max-width: 900px;
-      display: flex;
-      flex-direction: column;
-      gap: .85rem;
-    }
-    .hud {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: .5rem;
-      background: var(--yellow);
-      border: 3px solid var(--dark);
-      box-shadow: 4px 4px 0 var(--dark);
-      padding: .65rem 1rem;
-      font-family: var(--pixel);
-      font-size: .6rem;
-    }
-    .canvas-wrap {
-      border: 3px solid var(--dark);
-      box-shadow: 5px 5px 0 var(--dark);
-      background: var(--cyan);
-      overflow: hidden;
-    }
-    canvas {
-      display: block;
-      width: 100%;
-      height: auto;
-      image-rendering: pixelated;
-    }
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: .6rem;
-    }
-    .btn-group {
-      display: flex;
-      gap: .5rem;
-      flex-wrap: wrap;
-    }
-    button, .btn-link {
-      font-family: var(--pixel);
-      font-size: .58rem;
-      padding: .65rem .9rem;
-      border: 3px solid var(--dark);
-      background: var(--cream);
-      color: var(--dark);
-      box-shadow: 3px 3px 0 var(--dark);
-      cursor: pointer;
-      text-decoration: none;
-      user-select: none;
-      touch-action: manipulation;
-    }
-    button:active, .btn-link:active {
-      transform: translate(2px, 2px);
-      box-shadow: 1px 1px 0 var(--dark);
-    }
-    button.jump { background: var(--coral); }
-    button.active-sfx { background: var(--cyan); }
-    .quest-card {
-      border: 3px solid var(--dark);
-      box-shadow: 4px 4px 0 var(--dark);
-      background: var(--cream);
-      padding: 1rem 1.1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .quest-meta { flex: 1 1 420px; }
-    .quest-tag {
-      font-family: var(--pixel);
-      font-size: .52rem;
-      color: var(--dark);
-      margin-bottom: .45rem;
-      display: inline-block;
-      background: var(--yellow);
-      border: 2px solid var(--dark);
-      padding: .25rem .45rem;
-    }
-    .quest-title {
-      font-family: var(--pixel);
-      font-size: .72rem;
-      line-height: 1.5;
-      margin-bottom: .35rem;
-    }
-    .quest-desc { font-size: .95rem; line-height: 1.45; }
-    .quest-actions { display: flex; gap: .5rem; flex-wrap: wrap; }
-    .btn-link.primary { background: var(--cyan); }
-    .btn-link.secondary { background: var(--yellow); }
-    .stage-dots {
-      display: flex;
-      gap: .4rem;
-      flex-wrap: wrap;
-    }
-    .stage-pill {
-      font-family: var(--pixel);
-      font-size: .46rem;
-      padding: .4rem .55rem;
-      border: 2px solid var(--dark);
-      background: var(--cream);
-      cursor: pointer;
-    }
-    .stage-pill.unlocked { background: var(--coral); }
-    .stage-pill.current { outline: 3px solid var(--dark); background: var(--yellow); }
-    .hint {
-      font-size: .82rem;
-      opacity: .8;
-    }
-  </style>
-</head>
-<body>
-  <div class="shell">
-    <div class="hud">
-      <span>✳ 16A9DA // RAYYAN AHMED</span>
-      <span id="hud-score">SCORE 00000 · COINS x0/7</span>
-      <span>BMW AGENTIC AI INTERN ✳</span>
-    </div>
-
-    <div class="canvas-wrap">
-      <canvas id="game" width="880" height="320"></canvas>
-    </div>
-
-    <div class="controls">
-      <div class="btn-group">
-        <button id="btn-left" aria-label="Move Left">◀ LEFT</button>
-        <button id="btn-jump" class="jump" aria-label="Jump">▲ JUMP</button>
-        <button id="btn-right" aria-label="Move Right">▶ RIGHT</button>
-      </div>
-      <span class="hint">Keys: A/D or ◀/▶ to move · W/Space/▲ to jump</span>
-      <div class="btn-group">
-        <button id="btn-sfx" class="active-sfx">🔊 SFX: ON</button>
-        <button id="btn-reset">↻ RESET</button>
-      </div>
-    </div>
-
-    <div class="quest-card" id="quest-card">
-      <div class="quest-meta">
-        <span class="quest-tag" id="q-tag">STAGE 0 · START</span>
-        <h2 class="quest-title" id="q-title">BMW — Agentic AI Intern</h2>
-        <p class="quest-desc" id="q-desc">CS @ University of Debrecen · System Design · Model Training · LangChain · Always learning. Walk right and jump under [?] blocks to unlock repos!</p>
-      </div>
-      <div class="quest-actions" id="q-actions">
-        <a class="btn-link primary" href="https://github.com/16A9DA" target="_blank" rel="noopener">GITHUB ↗</a>
-        <a class="btn-link secondary" href="https://linkedin.com/in/16a9da" target="_blank" rel="noopener">LINKEDIN ↗</a>
-      </div>
-    </div>
-
-    <div class="stage-dots" id="stage-dots"></div>
-  </div>
-
-  <script>
-    const canvas = document.getElementById('game');
-    const ctx = canvas.getContext('2d');
-
-    const COLORS = {
-      cream: '#F2EDD7',
-      dark: '#1A1A1A',
-      cyan: '#6ECFCF',
-      yellow: '#F5D87A',
-      coral: '#E8857A'
-    };
-
-    const GROUND_Y = 264;
-    const LEVEL_W = 1480;
-
-    const STAGES = [
-      {
-        id: 0, x: 70, kind: 'sign', label: 'BMW', tag: 'STAGE 0 · START',
-        title: 'BMW — Agentic AI Intern',
-        desc: 'System Design, Model Training & Agentic AI · CS @ University of Debrecen · Stack: Python, PyTorch, LangChain, FastAPI, Ollama, RAG, Docker.',
-        links: [
-          { label: 'GITHUB PROFILE ↗', url: 'https://github.com/16A9DA', cls: 'primary' },
-          { label: 'LINKEDIN ↗', url: 'https://linkedin.com/in/16a9da', cls: 'secondary' }
-        ]
-      },
-      {
-        id: 1, x: 220, y: 152, kind: 'block', label: 'sol', tag: 'AGENTIC AI · BLOCK 1',
-        title: 'sol — Local AI Coding Agent',
-        desc: 'Offline terminal coding agent with a multi-model "expert council", local RAG code indexing, token compression, and destructive-op guardrails.',
-        links: [{ label: 'OPEN 16A9DA/sol ↗', url: 'https://github.com/16A9DA/sol', cls: 'primary' }]
-      },
-      {
-        id: 2, x: 375, y: 152, kind: 'block', label: 'rove', tag: 'COMPUTER AGENT · BLOCK 2',
-        title: 'rove — macOS Computer-Use Assistant',
-        desc: 'Text & voice goal orchestrator with specialist agents for browser, native apps, files & web research, plus live preview and risk approval prompts.',
-        links: [{ label: 'OPEN 16A9DA/rove ↗', url: 'https://github.com/16A9DA/rove', cls: 'primary' }]
-      },
-      {
-        id: 3, x: 530, y: 152, kind: 'block', label: 'NEVERMISS', tag: '🥇 KANZ AI GOLD · BLOCK 3',
-        title: 'NEVERMISSAI — Autonomous Voice Agent',
-        desc: 'Answers live calls, detects intent, screens scams & books appointments via Twilio, Groq Llama 3.3 70B, FastAPI, PostgreSQL, Redis & ChromaDB.',
-        links: [{ label: 'OPEN 16A9DA/NEVERMISSAI ↗', url: 'https://github.com/16A9DA/NEVERMISSAI', cls: 'primary' }]
-      },
-      {
-        id: 4, x: 690, y: 152, kind: 'block', label: 'Lineage', tag: 'RESEARCH · BLOCK 4',
-        title: 'lineage-revocation — Cryptographic Delegation Research',
-        desc: 'Lineage-keyed verifier-side delegation revocation prototype using COSE_Sign1 envelopes (CBOR tag 18) and custom RFC 8949 deterministic canonical CBOR.',
-        links: [{ label: 'OPEN 16A9DA/lineage-revocation ↗', url: 'https://github.com/16A9DA/lineage-revocation', cls: 'primary' }]
-      },
-      {
-        id: 5, x: 850, y: 152, kind: 'block', label: 'JobFind', tag: 'MODEL TRAINING · BLOCK 5',
-        title: 'Job-Finder — OCR + Llama 3 + 90% MLP',
-        desc: 'Two-stage FastAPI pipeline: Tesseract OCR + local Llama 3 structured resume parsing feeding a TF-IDF MLP classifier with 90% validation accuracy.',
-        links: [{ label: 'OPEN 16A9DA/Job-Finder ↗', url: 'https://github.com/16A9DA/Job-Finder', cls: 'primary' }]
-      },
-      {
-        id: 6, x: 1010, y: 152, kind: 'block', label: 'SensML', tag: 'MODEL TRAINING · BLOCK 6',
-        title: 'predictive-maintenance-failure-detection',
-        desc: 'ML pipeline on 10,000 sensor records (3.4% failure rate); benchmarked 3 classifiers with Gradient Boosting hitting F1 0.68 on the minority class.',
-        links: [{ label: 'OPEN REPO ↗', url: 'https://github.com/16A9DA/predictive-maintenance-failure-detection', cls: 'primary' }]
-      },
-      {
-        id: 7, x: 1175, y: 204, kind: 'pipe', label: 'RESET', tag: 'MOBILE AI · WARP PIPE',
-        title: 'RE:SET AI — Native iOS Health App',
-        desc: 'SwiftUI + SwiftData local-first iPhone app that auto-tracks work, uni & gym sessions + Apple Health data with AI food & chat guidance.',
-        links: [{ label: 'OPEN 16A9DA/RESET ↗', url: 'https://github.com/16A9DA/RESET', cls: 'primary' }]
-      },
-      {
-        id: 8, x: 1355, y: 116, kind: 'flag', label: 'CO-OP', tag: 'COURSE CLEAR! · SOCIALS',
-        title: 'World 1-1 Complete — Let’s Build Together!',
-        desc: 'Open for collaborations in Agentic AI, Model Training & System Design. Also check out AgenticNotes & dlml for learning logs.',
-        links: [
-          { label: 'LINKEDIN ↗', url: 'https://linkedin.com/in/16a9da', cls: 'primary' },
-          { label: 'EMAIL ↗', url: 'mailto:rayyan.tanweer@gmail.com', cls: 'secondary' },
-          { label: 'DISCORD ↗', url: 'https://discordapp.com/users/584487184141254731', cls: 'secondary' }
-        ]
-      }
-    ];
-
-    const MARIO_FRAME = [
-      '...RRRRR....',
-      '..RRRRRRRRR.',
-      '..BBBSSBS...',
-      '.BSBSSSBSSS.',
-      '.BSBBSSSBSSS',
-      '.BBSSSSBBBB.',
-      '...SSSSSSS..',
-      '..RRCRRR....',
-      '.RRRCRRRCR..',
-      'RRRRCCCCRRRR',
-      'SSRCYSYCRSS.',
-      'SSSCCCCCCSSS',
-      '..CCC..CCC..',
-      '.BBBB..BBBB.'
-    ];
-    const SPRITE_PAL = { R: COLORS.coral, S: COLORS.yellow, Y: COLORS.yellow, B: COLORS.dark, C: COLORS.cream };
-
-    let sfxEnabled = true;
-    let audioCtx = null;
-    function beep(freq, dur, type = 'square', slide = null) {
-      if (!sfxEnabled) return;
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-      osc.type = type;
-      osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-      if (slide) osc.frequency.exponentialRampToValueAtTime(slide, audioCtx.currentTime + dur);
-      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-      osc.start();
-      osc.stop(audioCtx.currentTime + dur);
-    }
-
-    const keys = { left: false, right: false, jump: false };
-    const player = { x: 60, y: GROUND_Y - 42, w: 36, h: 42, vx: 0, vy: 0, onGround: true, facing: 1 };
-    let score = 0;
-    let coins = 0;
-    let currentStageId = 0;
-    const unlocked = new Set([0]);
-    const particles = [];
-    const blockBounce = {};
-
-    function selectStage(stage) {
-      currentStageId = stage.id;
-      document.getElementById('q-tag').textContent = stage.tag;
-      document.getElementById('q-title').textContent = stage.title;
-      document.getElementById('q-desc').textContent = stage.desc;
-      const actions = document.getElementById('q-actions');
-      actions.innerHTML = '';
-      stage.links.forEach(l => {
-        const a = document.createElement('a');
-        a.className = 'btn-link ' + l.cls;
-        a.href = l.url;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        a.textContent = l.label;
-        actions.appendChild(a);
-      });
-      renderStagePills();
-    }
-
-    function renderStagePills() {
-      const wrap = document.getElementById('stage-dots');
-      wrap.innerHTML = '';
-      STAGES.forEach(s => {
-        const b = document.createElement('button');
-        b.className = 'stage-pill' + (unlocked.has(s.id) ? ' unlocked' : '') + (currentStageId === s.id ? ' current' : '');
-        b.textContent = `${s.id}: ${s.label}`;
-        b.onclick = () => {
-          player.x = Math.max(16, s.x - 18);
-          player.y = GROUND_Y - player.h;
-          player.vy = 0;
-          player.onGround = true;
-          if (!unlocked.has(s.id) && s.id >= 1 && s.id <= 7) {
-            unlocked.add(s.id);
-            coins++;
-            score += 200;
-            updateHud();
-          }
-          selectStage(s);
-        };
-        wrap.appendChild(b);
-      });
-    }
-
-    function updateHud() {
-      document.getElementById('hud-score').textContent =
-        `SCORE ${String(score).padStart(5, '0')} · COINS x${coins}/7`;
-    }
-
-    function spawnCoin(x, y) {
-      particles.push({ x, y, vy: -5.5, life: 36 });
-    }
-
-    function unlockStage(s) {
-      selectStage(s);
-      if (!unlocked.has(s.id)) {
-        unlocked.add(s.id);
-        if (s.id >= 1 && s.id <= 7) coins++;
-        score += s.id === 8 ? 500 : 200;
-        updateHud();
-        beep(988, 0.08);
-        setTimeout(() => beep(1319, 0.18), 70);
-      } else {
-        beep(660, 0.07);
-      }
-      renderStagePills();
-    }
-
-    function resetGame() {
-      player.x = 60;
-      player.y = GROUND_Y - player.h;
-      player.vx = 0;
-      player.vy = 0;
-      player.onGround = true;
-      player.facing = 1;
-      score = 0;
-      coins = 0;
-      unlocked.clear();
-      unlocked.add(0);
-      particles.length = 0;
-      updateHud();
-      selectStage(STAGES[0]);
-      beep(523, 0.08);
-    }
-
-    // Input wiring
-    window.addEventListener('keydown', e => {
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = true;
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = true;
-      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') {
-        e.preventDefault();
-        keys.jump = true;
-      }
-      if (e.key === 'r' || e.key === 'R') resetGame();
-      if (e.key === 'm' || e.key === 'M') document.getElementById('btn-sfx').click();
-    });
-    window.addEventListener('keyup', e => {
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') keys.left = false;
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') keys.right = false;
-      if (e.key === 'ArrowUp' || e.key === 'w' || e.key === 'W' || e.key === ' ') keys.jump = false;
-    });
-
-    function holdBtn(id, key) {
-      const el = document.getElementById(id);
-      const down = e => { e.preventDefault(); keys[key] = true; };
-      const up = e => { e.preventDefault(); keys[key] = false; };
-      el.addEventListener('mousedown', down);
-      el.addEventListener('touchstart', down, { passive: false });
-      window.addEventListener('mouseup', up);
-      window.addEventListener('touchend', up);
-    }
-    holdBtn('btn-left', 'left');
-    holdBtn('btn-right', 'right');
-    holdBtn('btn-jump', 'jump');
-
-    document.getElementById('btn-reset').onclick = resetGame;
-    document.getElementById('btn-sfx').onclick = () => {
-      sfxEnabled = !sfxEnabled;
-      const b = document.getElementById('btn-sfx');
-      b.textContent = sfxEnabled ? '🔊 SFX: ON' : '🔇 SFX: OFF';
-      b.classList.toggle('active-sfx', sfxEnabled);
-    };
-
-    function update() {
-      const speed = 4.2;
-      if (keys.left) { player.vx = -speed; player.facing = -1; }
-      else if (keys.right) { player.vx = speed; player.facing = 1; }
-      else { player.vx *= 0.72; }
-
-      if (keys.jump && player.onGround) {
-        player.vy = -11.8;
-        player.onGround = false;
-        beep(330, 0.14, 'square', 660);
-      }
-
-      player.vy += 0.56;
-      player.x = Math.max(10, Math.min(LEVEL_W - player.w - 10, player.x + player.vx));
-
-      // Horizontal pipe collision
-      const pipe = STAGES[7];
-      const px = pipe.x - 24, py = pipe.y, pw = 48, ph = GROUND_Y - pipe.y;
-      if (player.x + player.w > px && player.x < px + pw && player.y + player.h > py + 4) {
-        if (player.vx > 0) player.x = px - player.w;
-        else if (player.vx < 0) player.x = px + pw;
-      }
-
-      const prevY = player.y;
-      player.y += player.vy;
-      player.onGround = false;
-
-      // Ground
-      if (player.y + player.h >= GROUND_Y) {
-        player.y = GROUND_Y - player.h;
-        player.vy = 0;
-        player.onGround = true;
-      }
-
-      // Stand on pipe
-      if (player.x + player.w > px && player.x < px + pw && prevY + player.h <= py + 4 && player.y + player.h >= py) {
-        player.y = py - player.h;
-        player.vy = 0;
-        player.onGround = true;
-        unlockStage(pipe);
-      }
-
-      // Question blocks collision
-      STAGES.forEach(s => {
-        if (s.kind !== 'block') return;
-        const bx = s.x - 20, by = s.y, bw = 40, bh = 40;
-        if (player.x + player.w > bx && player.x < bx + bw) {
-          // Hit from below
-          if (player.vy < 0 && prevY >= by + bh - 6 && player.y <= by + bh) {
-            player.y = by + bh;
-            player.vy = 1.5;
-            blockBounce[s.id] = 10;
-            spawnCoin(s.x, by - 10);
-            unlockStage(s);
-          }
-          // Land on top
-          else if (player.vy >= 0 && prevY + player.h <= by + 6 && player.y + player.h >= by) {
-            player.y = by - player.h;
-            player.vy = 0;
-            player.onGround = true;
-          }
-        }
-      });
-
-      // Flagpole trigger
-      const flag = STAGES[8];
-      if (Math.abs((player.x + player.w / 2) - flag.x) < 22) {
-        unlockStage(flag);
-      }
-
-      // Update particles & bounces
-      for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].y += particles[i].vy;
-        particles[i].vy += 0.3;
-        particles[i].life--;
-        if (particles[i].life <= 0) particles.splice(i, 1);
-      }
-      Object.keys(blockBounce).forEach(k => {
-        if (blockBounce[k] > 0) blockBounce[k]--;
-      });
-    }
-
-    function drawBox(x, y, w, h, fill, lw = 3) {
-      ctx.fillStyle = COLORS.dark;
-      ctx.fillRect(x + 3, y + 3, w, h);
-      ctx.fillStyle = fill;
-      ctx.fillRect(x, y, w, h);
-      ctx.lineWidth = lw;
-      ctx.strokeStyle = COLORS.dark;
-      ctx.strokeRect(x, y, w, h);
-    }
-
-    function drawMario(x, y, facing) {
-      const px = 3;
-      for (let r = 0; r < MARIO_FRAME.length; r++) {
-        const row = MARIO_FRAME[r];
-        for (let c = 0; c < row.length; c++) {
-          const ch = row[facing === -1 ? row.length - 1 - c : c];
-          const col = SPRITE_PAL[ch];
-          if (col) {
-            ctx.fillStyle = col;
-            ctx.fillRect(Math.round(x) + c * px, Math.round(y) + r * px, px, px);
-          }
-        }
-      }
-    }
-
-    function draw() {
-      const camX = Math.max(0, Math.min(LEVEL_W - canvas.width, player.x - canvas.width * 0.38));
-
-      ctx.fillStyle = COLORS.cyan;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.save();
-      ctx.translate(-Math.round(camX), 0);
-
-      // Clouds
-      [160, 480, 820, 1140].forEach(cx => {
-        drawBox(cx, 54, 58, 16, COLORS.cream, 2);
-        drawBox(cx + 14, 42, 30, 14, COLORS.cream, 2);
-      });
-
-      // Ground
-      ctx.fillStyle = COLORS.coral;
-      ctx.fillRect(0, GROUND_Y, LEVEL_W, canvas.height - GROUND_Y);
-      ctx.strokeStyle = COLORS.dark;
-      ctx.lineWidth = 3;
-      ctx.beginPath();
-      ctx.moveTo(0, GROUND_Y);
-      ctx.lineTo(LEVEL_W, GROUND_Y);
-      ctx.stroke();
-      for (let gx = 0; gx < LEVEL_W; gx += 44) {
-        ctx.strokeRect(gx, GROUND_Y, 44, 28);
-        ctx.strokeRect(gx + 22, GROUND_Y + 28, 44, 28);
-      }
-
-      // Stages
-      ctx.textAlign = 'center';
-      STAGES.forEach(s => {
-        if (s.kind === 'sign') {
-          drawBox(s.x - 26, GROUND_Y - 62, 52, 28, COLORS.cream, 2.5);
-          ctx.fillStyle = COLORS.dark;
-          ctx.fillRect(s.x - 2, GROUND_Y - 34, 4, 34);
-          ctx.font = 'bold 11px monospace';
-          ctx.fillText(s.label, s.x, GROUND_Y - 44);
-        } else if (s.kind === 'block') {
-          const bounce = blockBounce[s.id] ? -Math.sin((blockBounce[s.id] / 10) * Math.PI) * 8 : 0;
-          const hit = unlocked.has(s.id);
-          drawBox(s.x - 20, s.y + bounce, 40, 40, hit ? COLORS.coral : COLORS.yellow, 3);
-          ctx.fillStyle = COLORS.dark;
-          ctx.font = 'bold 20px monospace';
-          ctx.fillText(hit ? '!' : '?', s.x, s.y + bounce + 27);
-          ctx.font = 'bold 11px monospace';
-          ctx.fillText(s.label, s.x, s.y - 10);
-        } else if (s.kind === 'pipe') {
-          drawBox(s.x - 24, s.y, 48, 16, COLORS.yellow, 3);
-          drawBox(s.x - 19, s.y + 16, 38, GROUND_Y - s.y - 16, COLORS.yellow, 3);
-          ctx.fillStyle = COLORS.dark;
-          ctx.font = 'bold 11px monospace';
-          ctx.fillText(s.label, s.x, s.y - 10);
-        } else if (s.kind === 'flag') {
-          ctx.fillStyle = COLORS.dark;
-          ctx.fillRect(s.x - 2, s.y, 4, GROUND_Y - s.y);
-          ctx.beginPath();
-          ctx.moveTo(s.x, s.y + 6);
-          ctx.lineTo(s.x - 42, s.y + 22);
-          ctx.lineTo(s.x, s.y + 38);
-          ctx.closePath();
-          ctx.fillStyle = COLORS.coral;
-          ctx.fill();
-          ctx.lineWidth = 2.5;
-          ctx.stroke();
-          ctx.fillStyle = COLORS.dark;
-          ctx.font = 'bold 11px monospace';
-          ctx.fillText(s.label, s.x - 20, s.y - 10);
-        }
-      });
-
-      // Coin particles
-      particles.forEach(p => {
-        drawBox(p.x - 8, p.y, 16, 22, COLORS.yellow, 2);
-      });
-
-      drawMario(player.x, player.y, player.facing);
-      ctx.restore();
-    }
-
-    function loop() {
-      update();
-      draw();
-      requestAnimationFrame(loop);
-    }
-
-    renderStagePills();
-    updateHud();
-    selectStage(STAGES[0]);
-    loop();
-  </script>
-</body>
-</html>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Rayyan Ahmed · Play my résumé</title>
+<style>
+:root{--ink:#1A1A1A;--cream:#F2EDD7;--yel:#F5D87A;--pink:#E8857A;--sky:#6ECFCF}
+*{box-sizing:border-box}html,body{margin:0;background:var(--ink);color:var(--cream);font-family:ui-monospace,Menlo,Consolas,monospace}
+body{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:12px;touch-action:manipulation}
+#wrap{width:min(100%,960px)}canvas{display:block;width:100%;image-rendering:pixelated;border:3px solid var(--cream);background:var(--sky)}
+.row{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+a.b,button{font:800 14px ui-monospace,Menlo,Consolas,monospace;color:var(--ink);background:var(--yel);border:3px solid var(--ink);box-shadow:4px 4px 0 var(--cream);padding:10px 16px;text-decoration:none;cursor:pointer;user-select:none;-webkit-user-select:none}
+a.b:active,button:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--cream)}
+a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)}
+#pad{display:none;gap:14px}@media (pointer:coarse){#pad{display:flex}}#pad button{font-size:22px;padding:14px 26px}
+#hint{font-size:12px;opacity:.75;text-align:center}#open{display:none}
+</style></head><body>
+<div id="wrap"><canvas id="c" width="640" height="250"></canvas></div>
+<div id="hint">← → move · ↑ / SPACE jump · bump the ★ and ? blocks from below · reach the flag</div>
+<div class="row" id="pad"><button id="L">◀</button><button id="J">▲</button><button id="R">▶</button></div>
+<div class="row"><a class="b" id="open" target="_blank" rel="noopener">OPEN ↗</a>
+<a class="b" href="https://linkedin.com/in/16a9da" target="_blank" rel="noopener">LinkedIn</a>
+<a class="b p" href="mailto:rayyan.tanweer@gmail.com">Email</a>
+<a class="b c" href="https://discordapp.com/users/584487184141254731" target="_blank" rel="noopener">Discord</a>
+<a class="b s" href="https://github.com/16A9DA?tab=repositories" target="_blank" rel="noopener">GitHub</a></div>
+<script>
+const S=[{"label": "CS", "kind": "start", "date": "", "title": "START :: CS @ UNIVERSITY OF DEBRECEN", "detail": "Computer Science student. The run begins here.", "cm": 0, "rp": 0, "url": ""}, {"label": "JobFind", "kind": "repo", "date": "JAN 2026", "title": "Job-Finder", "detail": "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", "cm": 35, "rp": 3, "url": "https://github.com/16A9DA/Job-Finder"}, {"label": "sol", "kind": "repo", "date": "JUN 2026", "title": "sol", "detail": "Local-first open-source AI coding assistant, council + RAG", "cm": 155, "rp": 8, "url": "https://github.com/16A9DA/sol"}, {"label": "InnerScript", "kind": "mile", "date": "JUL 2026", "title": "TECH LEAD (VOLUNTEER) @ INNERSCRIPT", "detail": "Built a mental-health community platform: 8000+ users/followers", "cm": 0, "rp": 0, "url": "https://innerscript.ca/"}, {"label": "NEVERMISS", "kind": "mile", "date": "JUL 2026", "title": "NEVERMISSAI :: KANZ AI HACKATHON GOLD", "detail": "Autonomous voice agent (Twilio, Groq Llama 3.3, ChromaDB)", "cm": 59, "rp": 2, "url": "https://github.com/16A9DA/NEVERMISSAI"}, {"label": "Lineage", "kind": "repo", "date": "AUG 2026", "title": "lineage-revocation", "detail": "Research: COSE_Sign1 + RFC 8949 CBOR delegation revocation verifier", "cm": 73, "rp": 3, "url": "https://github.com/16A9DA/lineage-revocation"}, {"label": "rove", "kind": "repo", "date": "SEP 2026", "title": "rove", "detail": "macOS computer-use agent: specialists, voice, approval gates", "cm": 118, "rp": 4, "url": "https://github.com/16A9DA/rove"}, {"label": "BMW", "kind": "mile", "date": "1 OCT 2026", "title": "JOINED BMW :: AGENTIC AI INTERN", "detail": "System design \u00b7 LangChain \u00b7 agentic AI in production", "cm": 0, "rp": 0, "url": "https://linkedin.com/in/16a9da"}, {"label": "RESET", "kind": "pipe", "date": "OCT 2026", "title": "RESET", "detail": "Local-first AI health app (SwiftUI + SwiftData)", "cm": 108, "rp": 2, "url": "https://github.com/16A9DA/RESET"}, {"label": "CO-OP", "kind": "flag", "date": "", "title": "COURSE CLEAR! :: LET'S BUILD TOGETHER", "detail": "LinkedIn /in/16a9da \u00b7 rayyan.tanweer@gmail.com \u00b7 Discord", "cm": 0, "rp": 0, "url": "https://linkedin.com/in/16a9da"}];
+const cv=document.getElementById('c'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
+const W=640,GY=150,SP=96,COL=S.map((_,i)=>44+i*SP),WORLD=COL[COL.length-1]+120,N=S.length;
+const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
+const SPR=["...RRRRR....", "..RRRRRRRRR.", "..BBBSSBS...", ".BSBSSSBSSS.", ".BSBBSSSBSSS", ".BBSSSSBBBB.", "...SSSSSSS..", "..RRCRRR....", ".RRRCRRRCR..", "RRRRCCCCRRRR", "SSRCYSYCRSS.", "SSSCCCCCCSSS", "..CCC..CCC..", ".BBBB..BBBB."],PAL={"R": "#E8857A", "S": "#F5D87A", "Y": "#F5D87A", "B": "#1A1A1A", "C": "#F2EDD7"};
+const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
+const keys={};let st;
+function reset(){st={x:COL[0],y:GY,vy:0,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
+reset();
+addEventListener('keydown',e=>{const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys[k.toLowerCase()]=1;if(st.won&&(k==='Enter'||k===' '))reset()});
+addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=0});
+for(const [id,k] of [['L','arrowleft'],['R','arrowright'],['J','arrowup']]){const b=document.getElementById(id);
+ const on=e=>{e.preventDefault();keys[k]=1},off=e=>{e.preventDefault();keys[k]=0};
+ b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)}
+cv.addEventListener('pointerdown',()=>{if(st.won)reset()});
+const open=document.getElementById('open');
+function setCur(i){if(st.cur===i&&open.href)return;st.cur=i;const u=S[i].url;if(u){open.style.display='';open.href=u;open.textContent=(S[i].kind==='repo'||S[i].kind==='pipe'?'OPEN '+S[i].title.toUpperCase():'VISIT')+' ↗'}else open.style.display='none'}
+setCur(0);
+function trigger(i){if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:70,t:0})}setCur(i)}
+let last=performance.now();
+function step(dt){
+ const L=keys.arrowleft||keys.a,R=keys.arrowright||keys.d,J=keys.arrowup||keys.w||keys[' '];
+ const v=(R?1:0)-(L?1:0);st.x=Math.min(Math.max(st.x+v*170*dt,20),WORLD-40);if(v)st.face=v;
+ const onG=st.y>=GY;if(J&&onG&&!st.won){st.vy=-400}
+ st.vy+=1250*dt;st.y+=st.vy*dt;if(st.y>=GY){st.y=GY;st.vy=0}
+ S.forEach((s,i)=>{const dx=Math.abs(st.x-COL[i]);
+  if(s.kind==='repo'||s.kind==='mile'){const w=s.kind==='mile'?20:15;
+   if(dx<w+6&&st.y-42<102&&st.y-42>60&&st.vy<0){st.y=102+42;st.vy=60;st.bump[i]=0.25;trigger(i)}}
+  else if(dx<26)trigger(i)});
+ if(S[st.cur].kind==='flag'&&Math.abs(st.x-COL[N-1])<26)st.won=true;
+ for(const k in st.bump){st.bump[k]-=dt;if(st.bump[k]<=0)delete st.bump[k]}
+ st.coins.forEach(c=>c.t+=dt);st.coins=st.coins.filter(c=>c.t<.7);st.t+=dt}
+function box(x,y,w,h,f){g.fillStyle=INK;g.fillRect(x+3,y+3,w,h);g.fillStyle=f;g.fillRect(x,y,w,h);g.strokeStyle=INK;g.lineWidth=2.5;g.strokeRect(x,y,w,h)}
+function txt(s,x,y,sz,al,mono=true,c=INK){g.fillStyle=c;g.textAlign=al;g.font=(mono?'800 ':'600 ')+sz+'px '+(mono?'ui-monospace,Menlo,Consolas,monospace':'-apple-system,Segoe UI,Helvetica,Arial,sans-serif');g.fillText(s,x,y)}
+function draw(){
+ g.fillStyle=SKY;g.fillRect(0,0,W,250);
+ const cam=Math.min(Math.max(st.x-190,0),WORLD-W);
+ g.save();g.beginPath();g.rect(0,0,W,GY+22);g.clip();g.translate(-cam,0);
+ for(let x=120;x<WORLD+400;x+=310){g.fillStyle=CREAM;g.strokeStyle=INK;g.lineWidth=2;g.fillRect(x,48,42,10);g.strokeRect(x,48,42,10);g.fillRect(x+10,42,22,8);g.strokeRect(x+10,42,22,8)}
+ g.fillStyle=PINK;g.fillRect(cam-8,GY,W+16,22);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(cam-8,GY,W+16,22);
+ g.lineWidth=2;g.globalAlpha=.35;for(let x=Math.floor(cam/40)*40;x<cam+W+40;x+=40){g.beginPath();g.moveTo(x+4,GY);g.lineTo(x+4,GY+22);g.stroke()}g.globalAlpha=1;
+ S.forEach((s,i)=>{const cx=COL[i],hit=st.hit.has(i);
+  if(s.kind==='repo'||s.kind==='mile'){const w=s.kind==='mile'?40:30,by=74-(st.bump[i]?Math.sin(st.bump[i]/.25*Math.PI)*6:0);
+   box(cx-w/2,by,w,28,hit?PINK:YEL);txt(s.kind==='mile'?'★':(hit?'!':'?'),cx,by+21,15,'center');txt(s.label,cx,68,8.5,'center')}
+  else if(s.kind==='start'){box(cx-22,84,44,22,CREAM);txt(s.label,cx,99,10,'center')}
+  else if(s.kind==='pipe'){box(cx-20,118,40,11,YEL);box(cx-15,129,30,GY-129,YEL);txt(s.label,cx,111,8.5,'center')}
+  else{g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(cx,66);g.lineTo(cx,GY);g.stroke();g.fillStyle=YEL;g.beginPath();g.arc(cx,64,5,0,7);g.fill();g.stroke();
+   const wv=1-.3*Math.abs(Math.sin(st.t*4));g.fillStyle=PINK;g.beginPath();g.moveTo(cx,70);g.lineTo(cx-28*wv,81);g.lineTo(cx,92);g.closePath();g.fill();g.lineWidth=2;g.stroke();txt(s.label,cx,56,8.5,'center')}
+  g.fillStyle=hit?YEL:CREAM;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(cx,GY+11,4,0,7);g.fill();g.stroke()});
+ st.coins.forEach(c=>{g.fillStyle=YEL;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(c.x,c.y-c.t*60,6,0,7);g.fill();g.stroke()});
+ g.save();g.translate(st.x,st.y);g.scale(st.face,1);g.drawImage(sp,-18,-42);g.restore();
+ g.restore();
+ // HUD
+ let cm=0,rp=0;st.hit.forEach(i=>{cm+=S[i].cm;rp+=S[i].rp});
+ g.fillStyle=YEL;g.fillRect(0,0,W,34);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,31);
+ txt('STAGE '+String(st.cur).padStart(2,'0')+'/'+(N-1),14,22,11,'left');txt('REPOS x'+String(rp).padStart(2,'0'),W/2,22,11,'center');txt('COMMITS '+String(cm).padStart(4,'0'),W-14,22,11,'right');
+ // panel
+ g.fillStyle=CREAM;g.fillRect(0,180,W,70);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,181.5,W-3,67);
+ const s=S[st.cur];txt('▶ '+(s.date?s.date+' :: ':'')+s.title,14,206,11,'left');txt(s.detail,14,228,12.5,'left',false);
+ if(!st.hit.has(1)&&st.cur===0)txt('Run →  then jump up under a block',W-14,243,10,'right');
+ if(st.won){g.fillStyle='rgba(26,26,26,.7)';g.fillRect(0,34,W,146);txt('COURSE CLEAR!',W/2,100,26,'center',true,YEL);txt('Press ENTER / tap to play again',W/2,130,12,'center',true,CREAM)}
+}
+function loop(n){const dt=Math.min((n-last)/1000,.05);last=n;step(dt);draw();requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></body></html>
