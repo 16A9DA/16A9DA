@@ -186,10 +186,12 @@ for name, text, fill, url in BTNS:
         f'<rect x="5" y="5" width="{w}" height="{h}" fill="#1A1A1A"/>'
         f'<rect x="1.5" y="1.5" width="{w - 3}" height="{h - 3}" fill="{fill}" stroke="#1A1A1A" stroke-width="3"/>{body}</svg>\n', encoding="utf-8")
     links[name] = f'<a href="{url}"><img src="./btn/{name}.svg" alt="{e(text)}" height="{h + 5}" /></a>'
+ALT = "Rayyan Ahmed: Mario runs from CS at University of Debrecen through Job-Finder, sol, InnerScript, NEVERMISSAI (Kanz AI gold), lineage-revocation, rove, BMW (Agentic AI Intern, Oct 2026) and RESET to the co-op flag"
+row = "&nbsp;".join(v.replace("<img ", '<img align="absmiddle" ') for v in links.values())
 Path(__file__).with_name("README.md").write_text(
-    '<div align="center">\n\n'
-    f'<a href="{GH}?tab=repositories"><img src="./mario-run.svg" alt="Rayyan Ahmed: Mario runs from CS at University of Debrecen through Job-Finder, sol, InnerScript, NEVERMISSAI (Kanz AI gold), lineage-revocation, rove, BMW (Agentic AI Intern, Oct 2026) and RESET to the co-op flag" width="800" /></a>\n\n'
-    + links["play"] + "\n\n" + "&nbsp;\n".join(v for n, v in links.items() if n != "play") + "\n\n</div>\n", encoding="utf-8")
+    '<div align="center">\n'
+    f'<a href="{GH}?tab=repositories"><img src="./mario-run.svg" alt="{ALT}" width="640" /></a><br>\n'
+    f'{row}\n</div>\n', encoding="utf-8")
 
 # ---- playable version (GitHub Pages): arrows / WASD / touch ----
 import json
