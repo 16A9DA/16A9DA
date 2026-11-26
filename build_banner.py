@@ -42,7 +42,7 @@ S = [  # repos/commits roll up everything created since the previous stop (dlml 
  ("CO-OP", "flag", "", "COURSE CLEAR! :: LET'S BUILD TOGETHER", "LinkedIn /in/16a9da · rayyan.tanweer@gmail.com · Discord", 0, 0),
 ]
 TECH = {  # frameworks per stop, from each repo's dependency files / README
- "MovieNLP": "Streamlit · scikit-learn · NLTK · pandas", "CS50AI": "Python",
+ "MovieNLP": "Streamlit · scikit-learn · NLTK · pandas", "CS50AI": "TensorFlow · OpenCV · scikit-learn · BERT (Transformers)",
  "JobFind": "FastAPI · Tesseract OCR · Ollama (Llama 3) · TF-IDF MLP", "Studdy": "Django · DRF · PostgreSQL · Docker",
  "DataSci": "pandas · NumPy · Jupyter", "Claude": "Next.js · TypeScript · Claude Code", "P2Exploit": "Flask · Python · Jupyter",
  "SensML": "scikit-learn · Streamlit · pandas · matplotlib", "Portfolio": "Django · PostgreSQL · HTML/CSS", "WidgetAI": "PySide6 · Python · Docker",
@@ -216,7 +216,7 @@ URLS = {"JobFind": GH + "/Job-Finder", "sol": GH + "/sol", "NEVERMISS": GH + "/N
 FULL = [  # label, kind, date, title, detail, commits, repos, github repo, story
  ("CS", "start", "", "START :: CS @ UNIVERSITY OF DEBRECEN", "Computer Science student. The run begins here.", 0, 0, "", ""),
  ("MovieNLP", "repo", "NOV 2025", "Movie-Sentiment", "NLP project: movie review sentiment classification", 29, 1, "Movie-Sentiment", ""),
- ("CS50AI", "repo", "DEC 2025", "CS50AI", "Harvard CS50 AI course projects", 5, 1, "CS50AI", ""),
+ ("CS50AI", "repo", "DEC 2025", "CS50AI", "Harvard CS50 AI: search, logic, probability, optimization, ML, neural nets, NLP", 5, 1, "CS50AI", ""),
  ("JobFind", "repo", "JAN 2026", "Job-Finder", "OCR + Llama 3 resume parser + TF-IDF MLP (90% val acc)", 1, 1, "Job-Finder", ""),
  ("Studdy", "repo", "MAR 2026", "StuddyBuddy", "Collaborative study platform", 6, 1, "StuddyBuddy", ""),
  ("DataSci", "repo", "APR 2026", "Data-Science", "Data science portfolio: projects & notebooks", 12, 1, "Data-Science", ""),
