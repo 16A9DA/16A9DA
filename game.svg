@@ -1,167 +1,173 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 278" width="800" height="278" role="img" aria-label="Interactive Retro Mario Profile Game">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 264" width="800" height="264" role="img" aria-label="16A9DA Retro Mario World 1-1">
   <defs>
     <style>
       .mono { font-family: ui-monospace, 'SFMono-Regular', Menlo, Monaco, Consolas, monospace; font-weight: 800; }
-      .sans { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+      @keyframes jumpBob {
+        0%, 100% { transform: translateY(0px); }
+        45% { transform: translateY(-16px); }
+        60% { transform: translateY(-16px); }
+      }
+      @keyframes blockBump {
+        0%, 40%, 100% { transform: translateY(0px); }
+        52% { transform: translateY(-6px); }
+      }
+      @keyframes coinPop {
+        0%, 42% { opacity: 0; transform: translateY(10px); }
+        55% { opacity: 1; transform: translateY(-8px); }
+        85% { opacity: 1; transform: translateY(-14px); }
+        100% { opacity: 0; transform: translateY(-18px); }
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.35; }
+      }
+      .mario { animation: jumpBob 2.4s ease-in-out infinite; }
+      .bump { animation: blockBump 2.4s ease-in-out infinite; }
+      .coin { animation: coinPop 2.4s ease-in-out infinite; }
+      .blink { animation: blink 1.5s ease-in-out infinite; }
     </style>
   </defs>
 
-  <!-- Outer Shadow & Sky Frame -->
-  <rect x="8" y="8" width="784" height="202" fill="#1A1A1A" />
-  <rect x="4" y="4" width="784" height="202" fill="#6ECFCF" stroke="#1A1A1A" stroke-width="3" />
+  <!-- Frame -->
+  <rect x="8" y="8" width="784" height="248" fill="#1A1A1A" />
+  <rect x="4" y="4" width="784" height="248" fill="#6ECFCF" stroke="#1A1A1A" stroke-width="3" />
 
-  <!-- HUD Strip -->
+  <!-- Top HUD -->
   <rect x="4" y="4" width="784" height="34" fill="#F5D87A" stroke="#1A1A1A" stroke-width="3" />
-  <text x="18" y="25" class="mono" font-size="11.5" fill="#1A1A1A">✳ 16A9DA · SCORE 00600</text>
-  <text x="396" y="25" text-anchor="middle" class="mono" font-size="11.5" fill="#1A1A1A">COINS x03 · WORLD 1-5</text>
-  <text x="774" y="25" text-anchor="end" class="mono" font-size="11" fill="#1A1A1A">PLAYER: @16A9DA</text>
+  <text x="18" y="25" class="mono" font-size="11.5" fill="#1A1A1A"><tspan class="blink" fill="#E8857A">✳</tspan> RAYYAN AHMED // 16A9DA</text>
+  <text x="410" y="25" text-anchor="middle" class="mono" font-size="11.5" fill="#1A1A1A">WORLD 1-1</text>
+  <text x="774" y="25" text-anchor="end" class="mono" font-size="11" fill="#1A1A1A">BMW AGENTIC AI INTERN <tspan class="blink" fill="#E8857A">✳</tspan></text>
 
   <!-- Clouds -->
-  <rect x="136" y="50" width="42" height="10" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
-  <rect x="146" y="44" width="22" height="8" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
-  <rect x="148" y="49" width="18" height="3" fill="#F2EDD7" />
+  <rect x="132" y="52" width="44" height="10" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
+  <rect x="142" y="46" width="24" height="8" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
+  <rect x="144" y="51" width="20" height="3" fill="#F2EDD7" />
 
-  <rect x="556" y="52" width="46" height="10" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
-  <rect x="568" y="46" width="22" height="8" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
-  <rect x="570" y="51" width="18" height="3" fill="#F2EDD7" />
+  <rect x="556" y="54" width="48" height="10" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
+  <rect x="568" y="48" width="24" height="8" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
+  <rect x="570" y="53" width="20" height="3" fill="#F2EDD7" />
 
   <!-- Ground -->
-  <rect x="4" y="180" width="784" height="26" fill="#E8857A" stroke="#1A1A1A" stroke-width="3" />
-  <line x1="48" y1="180" x2="48" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="96" y1="180" x2="96" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="144" y1="180" x2="144" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="192" y1="180" x2="192" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="240" y1="180" x2="240" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="288" y1="180" x2="288" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="336" y1="180" x2="336" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="384" y1="180" x2="384" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="432" y1="180" x2="432" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="480" y1="180" x2="480" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="528" y1="180" x2="528" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="576" y1="180" x2="576" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="624" y1="180" x2="624" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="672" y1="180" x2="672" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="720" y1="180" x2="720" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" /><line x1="768" y1="180" x2="768" y2="206" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <rect x="4" y="218" width="784" height="34" fill="#E8857A" stroke="#1A1A1A" stroke-width="3" />
+  <line x1="4" y1="235" x2="788" y2="235" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="70" y1="218" x2="70" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="155" y1="218" x2="155" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="240" y1="218" x2="240" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="325" y1="218" x2="325" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="410" y1="218" x2="410" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="495" y1="218" x2="495" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="580" y1="218" x2="580" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="665" y1="218" x2="665" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
+  <line x1="740" y1="218" x2="740" y2="252" stroke="#1A1A1A" stroke-width="2" opacity="0.35" />
 
-  <!-- Stage Objects -->
-  <rect x="38" y="88" width="44" height="24" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2.5" /><text x="60" y="104" text-anchor="middle" class="mono" font-size="10" fill="#1A1A1A">BMW</text><line x1="60" y1="112" x2="60" y2="122" stroke="#1A1A1A" stroke-width="2" /><circle cx="60" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><rect x="132" y="87" width="32" height="32" fill="#1A1A1A" /><rect x="129" y="84" width="32" height="32" fill="#E8857A" stroke="#1A1A1A" stroke-width="2.5" /><text x="145" y="106" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">!</text><text x="145" y="76" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">sol</text><circle cx="145" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><rect x="217" y="87" width="32" height="32" fill="#1A1A1A" /><rect x="214" y="84" width="32" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" /><text x="230" y="106" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">?</text><text x="230" y="76" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">rove</text><circle cx="230" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><rect x="302" y="87" width="32" height="32" fill="#1A1A1A" /><rect x="299" y="84" width="32" height="32" fill="#E8857A" stroke="#1A1A1A" stroke-width="2.5" /><text x="315" y="106" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">!</text><text x="315" y="76" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">NEVERMISS</text><circle cx="315" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><rect x="387" y="87" width="32" height="32" fill="#1A1A1A" /><rect x="384" y="84" width="32" height="32" fill="#E8857A" stroke="#1A1A1A" stroke-width="2.5" /><text x="400" y="106" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">!</text><text x="400" y="76" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">Lineage</text><rect x="366" y="44" width="68" height="20" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><text x="400" y="57" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">COSE+CBOR</text><circle cx="400" cy="193" r="5" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2" /><rect x="472" y="87" width="32" height="32" fill="#1A1A1A" /><rect x="469" y="84" width="32" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" /><text x="485" y="106" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">?</text><text x="485" y="76" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">JobFind</text><circle cx="485" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><rect x="557" y="87" width="32" height="32" fill="#1A1A1A" /><rect x="554" y="84" width="32" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" /><text x="570" y="106" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">?</text><text x="570" y="76" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">SensML</text><circle cx="570" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><rect x="633" y="140" width="44" height="12" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" /><rect x="638" y="152" width="34" height="28" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" /><text x="655" y="132" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">RESET</text><circle cx="655" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" /><line x1="740" y1="88" x2="740" y2="180" stroke="#1A1A1A" stroke-width="3" /><circle cx="740" cy="86" r="5" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2" /><polygon points="740,91 710,103 740,115" fill="#E8857A" stroke="#1A1A1A" stroke-width="2" /><text x="724" y="76" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">CO-OP</text><circle cx="740" cy="193" r="5" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2" />
+  <!-- Start Sign -->
+  <rect x="34" y="122" width="46" height="24" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="2.5" />
+  <text x="57" y="138" text-anchor="middle" class="mono" font-size="10" fill="#1A1A1A">BMW</text>
+  <line x1="57" y1="146" x2="57" y2="158" stroke="#1A1A1A" stroke-width="2" />
 
-  <!-- Pixel Mario -->
-  <g>
-    <rect x="391" y="118" width="3" height="3" fill="#E8857A" />
-    <rect x="394" y="118" width="3" height="3" fill="#E8857A" />
-    <rect x="397" y="118" width="3" height="3" fill="#E8857A" />
-    <rect x="400" y="118" width="3" height="3" fill="#E8857A" />
-    <rect x="403" y="118" width="3" height="3" fill="#E8857A" />
-    <rect x="388" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="391" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="394" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="397" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="400" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="403" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="406" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="409" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="412" y="121" width="3" height="3" fill="#E8857A" />
-    <rect x="388" y="124" width="3" height="3" fill="#1A1A1A" />
-    <rect x="391" y="124" width="3" height="3" fill="#1A1A1A" />
-    <rect x="394" y="124" width="3" height="3" fill="#1A1A1A" />
-    <rect x="397" y="124" width="3" height="3" fill="#F5D87A" />
-    <rect x="400" y="124" width="3" height="3" fill="#F5D87A" />
-    <rect x="403" y="124" width="3" height="3" fill="#1A1A1A" />
-    <rect x="406" y="124" width="3" height="3" fill="#F5D87A" />
-    <rect x="385" y="127" width="3" height="3" fill="#1A1A1A" />
-    <rect x="388" y="127" width="3" height="3" fill="#F5D87A" />
-    <rect x="391" y="127" width="3" height="3" fill="#1A1A1A" />
-    <rect x="394" y="127" width="3" height="3" fill="#F5D87A" />
-    <rect x="397" y="127" width="3" height="3" fill="#F5D87A" />
-    <rect x="400" y="127" width="3" height="3" fill="#F5D87A" />
-    <rect x="403" y="127" width="3" height="3" fill="#1A1A1A" />
-    <rect x="406" y="127" width="3" height="3" fill="#F5D87A" />
-    <rect x="409" y="127" width="3" height="3" fill="#F5D87A" />
-    <rect x="412" y="127" width="3" height="3" fill="#F5D87A" />
-    <rect x="385" y="130" width="3" height="3" fill="#1A1A1A" />
-    <rect x="388" y="130" width="3" height="3" fill="#F5D87A" />
-    <rect x="391" y="130" width="3" height="3" fill="#1A1A1A" />
-    <rect x="394" y="130" width="3" height="3" fill="#1A1A1A" />
-    <rect x="397" y="130" width="3" height="3" fill="#F5D87A" />
-    <rect x="400" y="130" width="3" height="3" fill="#F5D87A" />
-    <rect x="403" y="130" width="3" height="3" fill="#F5D87A" />
-    <rect x="406" y="130" width="3" height="3" fill="#1A1A1A" />
-    <rect x="409" y="130" width="3" height="3" fill="#F5D87A" />
-    <rect x="412" y="130" width="3" height="3" fill="#F5D87A" />
-    <rect x="415" y="130" width="3" height="3" fill="#F5D87A" />
-    <rect x="385" y="133" width="3" height="3" fill="#1A1A1A" />
-    <rect x="388" y="133" width="3" height="3" fill="#1A1A1A" />
-    <rect x="391" y="133" width="3" height="3" fill="#F5D87A" />
-    <rect x="394" y="133" width="3" height="3" fill="#F5D87A" />
-    <rect x="397" y="133" width="3" height="3" fill="#F5D87A" />
-    <rect x="400" y="133" width="3" height="3" fill="#F5D87A" />
-    <rect x="403" y="133" width="3" height="3" fill="#1A1A1A" />
-    <rect x="406" y="133" width="3" height="3" fill="#1A1A1A" />
-    <rect x="409" y="133" width="3" height="3" fill="#1A1A1A" />
-    <rect x="412" y="133" width="3" height="3" fill="#1A1A1A" />
-    <rect x="391" y="136" width="3" height="3" fill="#F5D87A" />
-    <rect x="394" y="136" width="3" height="3" fill="#F5D87A" />
-    <rect x="397" y="136" width="3" height="3" fill="#F5D87A" />
-    <rect x="400" y="136" width="3" height="3" fill="#F5D87A" />
-    <rect x="403" y="136" width="3" height="3" fill="#F5D87A" />
-    <rect x="406" y="136" width="3" height="3" fill="#F5D87A" />
-    <rect x="409" y="136" width="3" height="3" fill="#F5D87A" />
-    <rect x="388" y="139" width="3" height="3" fill="#E8857A" />
-    <rect x="391" y="139" width="3" height="3" fill="#E8857A" />
-    <rect x="394" y="139" width="3" height="3" fill="#F2EDD7" />
-    <rect x="397" y="139" width="3" height="3" fill="#E8857A" />
-    <rect x="400" y="139" width="3" height="3" fill="#E8857A" />
-    <rect x="403" y="139" width="3" height="3" fill="#E8857A" />
-    <rect x="385" y="142" width="3" height="3" fill="#E8857A" />
-    <rect x="388" y="142" width="3" height="3" fill="#E8857A" />
-    <rect x="391" y="142" width="3" height="3" fill="#E8857A" />
-    <rect x="394" y="142" width="3" height="3" fill="#F2EDD7" />
-    <rect x="397" y="142" width="3" height="3" fill="#E8857A" />
-    <rect x="400" y="142" width="3" height="3" fill="#E8857A" />
-    <rect x="403" y="142" width="3" height="3" fill="#E8857A" />
-    <rect x="406" y="142" width="3" height="3" fill="#F2EDD7" />
-    <rect x="409" y="142" width="3" height="3" fill="#E8857A" />
-    <rect x="382" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="385" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="388" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="391" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="394" y="145" width="3" height="3" fill="#F2EDD7" />
-    <rect x="397" y="145" width="3" height="3" fill="#F2EDD7" />
-    <rect x="400" y="145" width="3" height="3" fill="#F2EDD7" />
-    <rect x="403" y="145" width="3" height="3" fill="#F2EDD7" />
-    <rect x="406" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="409" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="412" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="415" y="145" width="3" height="3" fill="#E8857A" />
-    <rect x="382" y="148" width="3" height="3" fill="#F5D87A" />
-    <rect x="385" y="148" width="3" height="3" fill="#F5D87A" />
-    <rect x="388" y="148" width="3" height="3" fill="#E8857A" />
-    <rect x="391" y="148" width="3" height="3" fill="#F2EDD7" />
-    <rect x="394" y="148" width="3" height="3" fill="#F5D87A" />
-    <rect x="397" y="148" width="3" height="3" fill="#F5D87A" />
-    <rect x="400" y="148" width="3" height="3" fill="#F5D87A" />
-    <rect x="403" y="148" width="3" height="3" fill="#F2EDD7" />
-    <rect x="406" y="148" width="3" height="3" fill="#E8857A" />
-    <rect x="409" y="148" width="3" height="3" fill="#F5D87A" />
-    <rect x="412" y="148" width="3" height="3" fill="#F5D87A" />
-    <rect x="382" y="151" width="3" height="3" fill="#F5D87A" />
-    <rect x="385" y="151" width="3" height="3" fill="#F5D87A" />
-    <rect x="388" y="151" width="3" height="3" fill="#F5D87A" />
-    <rect x="391" y="151" width="3" height="3" fill="#F2EDD7" />
-    <rect x="394" y="151" width="3" height="3" fill="#F2EDD7" />
-    <rect x="397" y="151" width="3" height="3" fill="#F2EDD7" />
-    <rect x="400" y="151" width="3" height="3" fill="#F2EDD7" />
-    <rect x="403" y="151" width="3" height="3" fill="#F2EDD7" />
-    <rect x="406" y="151" width="3" height="3" fill="#F2EDD7" />
-    <rect x="409" y="151" width="3" height="3" fill="#F5D87A" />
-    <rect x="412" y="151" width="3" height="3" fill="#F5D87A" />
-    <rect x="415" y="151" width="3" height="3" fill="#F5D87A" />
-    <rect x="388" y="154" width="3" height="3" fill="#F2EDD7" />
-    <rect x="391" y="154" width="3" height="3" fill="#F2EDD7" />
-    <rect x="394" y="154" width="3" height="3" fill="#F2EDD7" />
-    <rect x="403" y="154" width="3" height="3" fill="#F2EDD7" />
-    <rect x="406" y="154" width="3" height="3" fill="#F2EDD7" />
-    <rect x="409" y="154" width="3" height="3" fill="#F2EDD7" />
-    <rect x="385" y="157" width="3" height="3" fill="#1A1A1A" />
-    <rect x="388" y="157" width="3" height="3" fill="#1A1A1A" />
-    <rect x="391" y="157" width="3" height="3" fill="#1A1A1A" />
-    <rect x="394" y="157" width="3" height="3" fill="#1A1A1A" />
-    <rect x="403" y="157" width="3" height="3" fill="#1A1A1A" />
-    <rect x="406" y="157" width="3" height="3" fill="#1A1A1A" />
-    <rect x="409" y="157" width="3" height="3" fill="#1A1A1A" />
-    <rect x="412" y="157" width="3" height="3" fill="#1A1A1A" />
+  <!-- Sol Block -->
+  <text x="142" y="112" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">sol</text>
+  <rect x="129" y="123" width="32" height="32" fill="#1A1A1A" />
+  <rect x="126" y="120" width="32" height="32" fill="#E8857A" stroke="#1A1A1A" stroke-width="2.5" />
+  <text x="142" y="142" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">!</text>
+
+  <!-- Rove Block -->
+  <text x="227" y="112" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">rove</text>
+  <rect x="214" y="123" width="32" height="32" fill="#1A1A1A" />
+  <rect x="211" y="120" width="32" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" />
+  <text x="227" y="142" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">?</text>
+
+  <!-- NEVERMISSAI Block -->
+  <text x="312" y="112" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">NEVERMISS</text>
+  <rect x="299" y="123" width="32" height="32" fill="#1A1A1A" />
+  <rect x="296" y="120" width="32" height="32" fill="#E8857A" stroke="#1A1A1A" stroke-width="2.5" />
+  <text x="312" y="142" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">!</text>
+
+  <!-- Animated Coin + Bumped Lineage Block -->
+  <g class="coin">
+    <rect x="390" y="72" width="14" height="20" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2" />
+    <rect x="395" y="76" width="4" height="12" fill="#1A1A1A" />
+  </g>
+  <g class="bump">
+    <text x="397" y="112" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">Lineage</text>
+    <rect x="384" y="123" width="32" height="32" fill="#1A1A1A" />
+    <rect x="381" y="120" width="32" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" />
+    <text x="397" y="142" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">?</text>
   </g>
 
-  <!-- Dialogue / Status Box -->
-  <rect x="8" y="220" width="784" height="52" fill="#1A1A1A" />
-  <rect x="4" y="216" width="784" height="52" fill="#F2EDD7" stroke="#1A1A1A" stroke-width="3" />
-  <text x="18" y="237" class="mono" font-size="11.5" fill="#1A1A1A">▶ UNLOCKED [lineage-revocation] :: RESEARCH</text>
-  <text x="18" y="256" class="sans" font-size="12.5" font-weight="600" fill="#1A1A1A">Verifier-side delegation revocation via COSE_Sign1 &amp; RFC 8949 CBOR</text>
+  <!-- Job-Finder Block -->
+  <text x="482" y="112" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">JobFind</text>
+  <rect x="469" y="123" width="32" height="32" fill="#1A1A1A" />
+  <rect x="466" y="120" width="32" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" />
+  <text x="482" y="142" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">?</text>
+
+  <!-- Predictive Maintenance Block -->
+  <text x="567" y="112" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">SensML</text>
+  <rect x="554" y="123" width="32" height="32" fill="#1A1A1A" />
+  <rect x="551" y="120" width="32" height="32" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" />
+  <text x="567" y="142" text-anchor="middle" class="mono" font-size="16" fill="#1A1A1A">?</text>
+
+  <!-- RESET Warp Pipe -->
+  <text x="652" y="168" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">RESET</text>
+  <rect x="630" y="176" width="44" height="12" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" />
+  <rect x="635" y="188" width="34" height="30" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2.5" />
+
+  <!-- Flagpole -->
+  <text x="720" y="110" text-anchor="middle" class="mono" font-size="9" fill="#1A1A1A">CO-OP</text>
+  <line x1="740" y1="122" x2="740" y2="218" stroke="#1A1A1A" stroke-width="3" />
+  <circle cx="740" cy="120" r="5" fill="#F5D87A" stroke="#1A1A1A" stroke-width="2" />
+  <polygon points="740,125 708,138 740,151" fill="#E8857A" stroke="#1A1A1A" stroke-width="2" />
+
+  <!-- Animated Pixel Mario under Lineage -->
+  <g class="mario" transform="translate(379, 176)">
+    <rect x="9" y="0" width="15" height="3" fill="#E8857A" />
+    <rect x="6" y="3" width="27" height="3" fill="#E8857A" />
+    <rect x="6" y="6" width="9" height="3" fill="#1A1A1A" />
+    <rect x="15" y="6" width="6" height="3" fill="#F5D87A" />
+    <rect x="21" y="6" width="3" height="3" fill="#1A1A1A" />
+    <rect x="24" y="6" width="3" height="3" fill="#F5D87A" />
+    <rect x="3" y="9" width="3" height="3" fill="#1A1A1A" />
+    <rect x="6" y="9" width="3" height="3" fill="#F5D87A" />
+    <rect x="9" y="9" width="3" height="3" fill="#1A1A1A" />
+    <rect x="12" y="9" width="9" height="3" fill="#F5D87A" />
+    <rect x="21" y="9" width="3" height="3" fill="#1A1A1A" />
+    <rect x="24" y="9" width="9" height="3" fill="#F5D87A" />
+    <rect x="3" y="12" width="3" height="3" fill="#1A1A1A" />
+    <rect x="6" y="12" width="3" height="3" fill="#F5D87A" />
+    <rect x="9" y="12" width="6" height="3" fill="#1A1A1A" />
+    <rect x="15" y="12" width="9" height="3" fill="#F5D87A" />
+    <rect x="24" y="12" width="3" height="3" fill="#1A1A1A" />
+    <rect x="27" y="12" width="9" height="3" fill="#F5D87A" />
+    <rect x="3" y="15" width="6" height="3" fill="#1A1A1A" />
+    <rect x="9" y="15" width="12" height="3" fill="#F5D87A" />
+    <rect x="21" y="15" width="12" height="3" fill="#1A1A1A" />
+    <rect x="9" y="18" width="21" height="3" fill="#F5D87A" />
+    <rect x="6" y="21" width="6" height="3" fill="#E8857A" />
+    <rect x="12" y="21" width="3" height="3" fill="#F2EDD7" />
+    <rect x="15" y="21" width="9" height="3" fill="#E8857A" />
+    <rect x="3" y="24" width="9" height="3" fill="#E8857A" />
+    <rect x="12" y="24" width="3" height="3" fill="#F2EDD7" />
+    <rect x="15" y="24" width="9" height="3" fill="#E8857A" />
+    <rect x="24" y="24" width="3" height="3" fill="#F2EDD7" />
+    <rect x="27" y="24" width="3" height="3" fill="#E8857A" />
+    <rect x="0" y="27" width="12" height="3" fill="#E8857A" />
+    <rect x="12" y="27" width="12" height="3" fill="#F2EDD7" />
+    <rect x="24" y="27" width="12" height="3" fill="#E8857A" />
+    <rect x="0" y="30" width="6" height="3" fill="#F5D87A" />
+    <rect x="6" y="30" width="3" height="3" fill="#E8857A" />
+    <rect x="9" y="30" width="3" height="3" fill="#F2EDD7" />
+    <rect x="12" y="30" width="3" height="3" fill="#F5D87A" />
+    <rect x="15" y="30" width="3" height="3" fill="#F2EDD7" />
+    <rect x="18" y="30" width="3" height="3" fill="#F5D87A" />
+    <rect x="21" y="30" width="3" height="3" fill="#F2EDD7" />
+    <rect x="24" y="30" width="3" height="3" fill="#E8857A" />
+    <rect x="27" y="30" width="6" height="3" fill="#F5D87A" />
+    <rect x="0" y="33" width="9" height="3" fill="#F5D87A" />
+    <rect x="9" y="33" width="18" height="3" fill="#F2EDD7" />
+    <rect x="27" y="33" width="9" height="3" fill="#F5D87A" />
+    <rect x="6" y="36" width="9" height="3" fill="#F2EDD7" />
+    <rect x="21" y="36" width="9" height="3" fill="#F2EDD7" />
+    <rect x="3" y="39" width="12" height="3" fill="#1A1A1A" />
+    <rect x="21" y="39" width="12" height="3" fill="#1A1A1A" />
+  </g>
 </svg>
