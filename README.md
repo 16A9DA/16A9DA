@@ -1,15 +1,6 @@
 <div align="center">
 
-<img src="./game.svg" alt="Rayyan Ahmed — Retro Mario World 1-1" width="520" />
-
-<br/>
-
-<a href="https://github.com/16A9DA/16A9DA/issues/new?body=Just+press+%22Submit+new+issue%22.+Mario+moves+in+~20s.&title=mario:left"><kbd>&nbsp;◀ LEFT&nbsp;</kbd></a>
-<a href="https://github.com/16A9DA/16A9DA/issues/new?body=Just+press+%22Submit+new+issue%22.+Mario+moves+in+~20s.&title=mario:jump"><kbd>&nbsp;▲ JUMP&nbsp;</kbd></a>
-<a href="https://github.com/16A9DA/16A9DA/issues/new?body=Just+press+%22Submit+new+issue%22.+Mario+moves+in+~20s.&title=mario:right"><kbd>&nbsp;RIGHT ▶&nbsp;</kbd></a>
-<a href="https://github.com/16A9DA/16A9DA/issues/new?body=Just+press+%22Submit+new+issue%22.+Mario+moves+in+~20s.&title=mario:reset"><kbd>&nbsp;↺&nbsp;</kbd></a>
-
-<sub>Click a button → submit the issue → bot moves Mario → refresh. Or <a href="https://16a9da.github.io/16a9da/">play live with keyboard</a>.</sub>
+<img src="./game.svg" alt="Rayyan Ahmed — Retro Mario World 1-1" width="640" />
 
 </div>
 
@@ -20,7 +11,7 @@
 <details open>
 <summary><b>🍄 WORLD SELECT — Click any stage to inspect (or play live above)</b></summary>
 
-| Stage | World | Focus & Repo |
+| Stage | World | Game Point / Repo |
 | :---: | :--- | :--- |
 | **0** | **Start** | **BMW** *(Agentic AI Intern)* · `System Design` · `LangChain` |
 | **1–3** | **Agentic AI** | [`sol`](https://github.com/16A9DA/sol) *(local multi-model coding agent)* · [`rove`](https://github.com/16A9DA/rove) *(macOS computer-use agent)* · [`NEVERMISSAI`](https://github.com/16A9DA/NEVERMISSAI) *(🥇 Kanz AI Gold voice agent)* |
