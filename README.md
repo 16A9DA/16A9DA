@@ -1,33 +1,16 @@
 <div align="center">
 
-```text
-+-------------------------------------------------------------------+
-|  RAYYAN AHMED // 16A9DA              WORLD 1-1       LIVES x INF  |
-+-------------------------------------------------------------------+
-|                                                                   |
-|           [ ? ]   [###] [ ? ] [###]                      |\       |
-|                                                          | \__    |
-|    (o)   (o)   (o)                      [====]           |  |     |
-|                                          |  |            |  |     |
-|==========================================|  |============|  |=====|
-+-------------------------------------------------------------------+
-|  > CLASS   : Agentic AI & Model Training (CS @ Debrecen '27)      |
-|  > PASSIVE : Always learning new architectures, tools & papers    |
-|  > LOADOUT : Python · PyTorch · FastAPI · Ollama · RAG · Docker   |
-|  > TROPHY  : Gold Medal @ Kanz AI Hackathon                       |
-+-------------------------------------------------------------------+
-```
+<a href="https://me-ob0p.onrender.com/">
+  <img src="./retro-bento.svg" alt="Rayyan Ahmed — Agentic AI & Model Training" width="100%" />
+</a>
 
-<a href="https://me-ob0p.onrender.com/"><kbd>&nbsp;PORTFOLIO&nbsp;</kbd></a>
-&nbsp;
-<a href="https://linkedin.com/in/16a9da"><kbd>&nbsp;LINKEDIN&nbsp;</kbd></a>
-&nbsp;
-<a href="mailto:rayyan.tanweer@gmail.com"><kbd>&nbsp;EMAIL&nbsp;</kbd></a>
-&nbsp;
-<a href="https://discordapp.com/users/584487184141254731"><kbd>&nbsp;DISCORD&nbsp;</kbd></a>
+<br/><br/>
 
-<br/>
-
-<sub>`▼ PRESS START — PINNED REPOS BELOW ▼`</sub>
+[![Portfolio](https://img.shields.io/badge/%E2%9C%B3-PORTFOLIO-F5D87A?style=for-the-badge&labelColor=1A1A1A)](https://me-ob0p.onrender.com/)
+[![LinkedIn](https://img.shields.io/badge/%E2%9C%B3-LINKEDIN-6ECFCF?style=for-the-badge&labelColor=1A1A1A)](https://linkedin.com/in/16a9da)
+[![Email](https://img.shields.io/badge/%E2%9C%B3-EMAIL-E8857A?style=for-the-badge&labelColor=1A1A1A)](mailto:rayyan.tanweer@gmail.com)
+[![Discord](https://img.shields.io/badge/%E2%9C%B3-DISCORD-F2EDD7?style=for-the-badge&labelColor=1A1A1A)](https://discordapp.com/users/584487184141254731)
 
 </div>
+
+<img width="840" height="362" alt="retro-bento" src="https://github.com/user-attachments/assets/e5285847-d0a1-4f1a-8761-58a51bb5e743" />
