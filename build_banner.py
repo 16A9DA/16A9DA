@@ -178,20 +178,20 @@ links = []
 links = {}
 for name, text, fill, url in BTNS:
     icon = name == "play"
-    w, h = (178, 52) if icon else (len(text) * 8 + 26, 30)
-    body = (f'<g transform="translate(20,{(h - 24) / 2})">{ICONS[name]}</g><text x="{w / 2 + 18}" y="{h / 2 + 6}" text-anchor="middle" fill="#1A1A1A" style="font:800 18px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text>' if icon else
-            f'<text x="{w / 2}" y="{h / 2 + 4}" text-anchor="middle" fill="#1A1A1A" style="font:800 12px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text>')
+    w, h = (68, 40) if icon else (len(text) * 7 + 22, 24)
+    body = (f'<g transform="translate({(w - 24) / 2},{(h - 24) / 2})">{ICONS[name]}</g>' if icon else
+            f'<text x="{w / 2}" y="{h / 2 + 4}" text-anchor="middle" fill="#1A1A1A" style="font:800 11px ui-monospace,Menlo,Consolas,monospace">{e(text)}</text>')
     (out / f"{name}.svg").write_text(
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{w + 5}" height="{h + 5}" viewBox="0 0 {w + 5} {h + 5}" role="img" aria-label="{e(text)}">'
         f'<rect x="5" y="5" width="{w}" height="{h}" fill="#1A1A1A"/>'
         f'<rect x="1.5" y="1.5" width="{w - 3}" height="{h - 3}" fill="{fill}" stroke="#1A1A1A" stroke-width="3"/>{body}</svg>\n', encoding="utf-8")
     links[name] = f'<a href="{url}"><img src="./btn/{name}.svg" alt="{e(text)}" height="{h + 5}" /></a>'
 ALT = "Rayyan Ahmed: Mario runs from CS at University of Debrecen through Job-Finder, sol, InnerScript, NEVERMISSAI (Kanz AI gold), lineage-revocation, rove, BMW (Agentic AI Intern, Oct 2026) and RESET to the co-op flag"
-row = "&nbsp;".join(v.replace("<img ", '<img align="absmiddle" ') for v in links.values())
+row = "&nbsp;".join(v.replace("<img ", '<img align="absmiddle" ') for n, v in links.items() if n != "play")
 Path(__file__).with_name("README.md").write_text(
     '<div align="center">\n'
     f'<a href="{GH}?tab=repositories"><img src="./mario-run.svg" alt="{ALT}" width="640" /></a><br>\n'
-    f'{row}\n</div>\n', encoding="utf-8")
+    f'{links["play"]}<br>\n{row}\n</div>\n', encoding="utf-8")
 
 # ---- playable version (GitHub Pages): arrows / WASD / touch ----
 import json
