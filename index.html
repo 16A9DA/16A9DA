@@ -16,7 +16,7 @@ a.p{background:var(--pink)}a.c{background:var(--cream)}a.s{background:var(--sky)
 </style></head><body>
 <h1>RAYYAN AHMED</h1><p id="sub">Agentic AI Intern @ BMW · CS @ University of Debrecen</p>
 <div id="wrap"><canvas id="c" width="640" height="250"></canvas></div>
-<div id="hint">← → move · ↑ / SPACE jump · bump the ★ and ? blocks from below · reach the flag</div>
+<div id="hint">← → move · ↑ / SPACE jump · land on or bump the ★ and ? blocks, hop from block to block · reach the flag</div>
 <div class="row" id="pad"><button id="L">◀</button><button id="J">▲</button><button id="R">▶</button></div>
 <div class="row"><a class="b" id="open" target="_blank" rel="noopener">OPEN ↗</a>
 <a class="b" href="https://linkedin.com/in/16a9da" target="_blank" rel="noopener">LinkedIn</a>
@@ -30,12 +30,14 @@ const W=640,GY=150,SP=96,COL=S.map((_,i)=>44+i*SP),WORLD=COL[COL.length-1]+120,N
 const INK='#1A1A1A',CREAM='#F2EDD7',YEL='#F5D87A',PINK='#E8857A',SKY='#6ECFCF';
 const SPR=["...RRRRR....", "..RRRRRRRRR.", "..BBBSSBS...", ".BSBSSSBSSS.", ".BSBBSSSBSSS", ".BBSSSSBBBB.", "...SSSSSSS..", "..RRCRRR....", ".RRRCRRRCR..", "RRRRCCCCRRRR", "SSRCYSYCRSS.", "SSSCCCCCCSSS", "..CCC..CCC..", ".BBBB..BBBB."],PAL={"R": "#E8857A", "S": "#F5D87A", "Y": "#F5D87A", "B": "#1A1A1A", "C": "#F2EDD7"};
 const sp=document.createElement('canvas');sp.width=36;sp.height=42;{const q=sp.getContext('2d');SPR.forEach((r,y)=>[...r].forEach((ch,x)=>{if(PAL[ch]){q.fillStyle=PAL[ch];q.fillRect(x*3,y*3,3,3)}}))}
+const BLK=[];{let k=0;S.forEach((s,i)=>{if(s.kind==='repo'||s.kind==='mile'){BLK.push({i,cx:COL[i],w:s.kind==='mile'?40:30,top:k%2?62:78});k++}})}
+const BH=28,PW=9,PH=42;
 const keys={};let st,K=1;
 function fit(){const hh=document.querySelector('h1').offsetHeight+document.getElementById('sub').offsetHeight+document.getElementById('hint').offsetHeight+(innerWidth<700?150:90)+60;
  const w=Math.max(320,Math.min(innerWidth-28,1040,(innerHeight-hh)*W/250));document.getElementById('wrap').style.width=w+'px';
  const d=Math.min(devicePixelRatio||1,3);K=w*d/W;cv.width=Math.round(W*K);cv.height=Math.round(250*K);g.setTransform(K,0,0,K,0,0);g.imageSmoothingEnabled=false}
 addEventListener('resize',fit);
-function reset(){st={x:COL[0],y:GY,vy:0,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
+function reset(){st={x:COL[0],y:GY,vy:0,gr:true,face:1,hit:new Set([0]),cur:0,coins:[],bump:{},t:0,won:false}}
 reset();
 addEventListener('keydown',e=>{const k=e.key;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown',' '].includes(k))e.preventDefault();keys[k.toLowerCase()]=1;if(st.won&&(k==='Enter'||k===' '))reset()});
 addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=0});
@@ -46,17 +48,20 @@ cv.addEventListener('pointerdown',()=>{if(st.won)reset()});
 const open=document.getElementById('open');
 function setCur(i){if(st.cur===i&&open.href)return;st.cur=i;const u=S[i].url;if(u){open.style.display='';open.href=u;open.textContent=(S[i].kind==='repo'||S[i].kind==='pipe'?'OPEN '+S[i].title.toUpperCase():'VISIT')+' ↗'}else open.style.display='none'}
 setCur(0);fit();
-function trigger(i){if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:70,t:0})}setCur(i)}
+function trigger(i){if(!st.hit.has(i)){st.hit.add(i);if(S[i].kind==='repo'||S[i].kind==='mile')st.coins.push({x:COL[i],y:(BLK.find(b=>b.i===i)||{top:70}).top-8,t:0})}setCur(i)}
 let last=performance.now();
 function step(dt){
  const L=keys.arrowleft||keys.a,R=keys.arrowright||keys.d,J=keys.arrowup||keys.w||keys[' '];
- const v=(R?1:0)-(L?1:0);st.x=Math.min(Math.max(st.x+v*170*dt,20),WORLD-40);if(v)st.face=v;
- const onG=st.y>=GY;if(J&&onG&&!st.won){st.vy=-400}
- st.vy+=1250*dt;st.y+=st.vy*dt;if(st.y>=GY){st.y=GY;st.vy=0}
- S.forEach((s,i)=>{const dx=Math.abs(st.x-COL[i]);
-  if(s.kind==='repo'||s.kind==='mile'){const w=s.kind==='mile'?20:15;
-   if(dx<w+6&&st.y-42<102&&st.y-42>60&&st.vy<0){st.y=102+42;st.vy=60;st.bump[i]=0.25;trigger(i)}}
-  else if(dx<26)trigger(i)});
+ const v=(R?1:0)-(L?1:0),px0=st.x;st.x=Math.min(Math.max(st.x+v*175*dt,20),WORLD-40);if(v)st.face=v;
+ // sideways: blocks are solid
+ for(const b of BLK){const bot=b.top+BH;if(st.y>b.top+1&&st.y-PH<bot-1&&Math.abs(st.x-b.cx)<b.w/2+PW)st.x=b.cx+(px0<b.cx?-1:1)*(b.w/2+PW)}
+ if(J&&st.gr&&!st.won){st.vy=-500}
+ const py=st.y;st.vy+=1250*dt;st.y+=st.vy*dt;st.gr=false;
+ for(const b of BLK){const bot=b.top+BH;if(Math.abs(st.x-b.cx)>=b.w/2+PW-1)continue;
+  if(st.vy>=0&&py<=b.top+.5&&st.y>=b.top){st.y=b.top;st.vy=0;st.gr=true;trigger(b.i)}
+  else if(st.vy<0&&py-PH>=bot-.5&&st.y-PH<bot){st.y=bot+PH;st.vy=40;st.bump[b.i]=.25;trigger(b.i)}}
+ if(st.y>=GY){st.y=GY;st.vy=0;st.gr=true}
+ S.forEach((s,i)=>{if(!(s.kind==='repo'||s.kind==='mile')&&Math.abs(st.x-COL[i])<26)trigger(i)});
  if(S[st.cur].kind==='flag'&&Math.abs(st.x-COL[N-1])<26)st.won=true;
  for(const k in st.bump){st.bump[k]-=dt;if(st.bump[k]<=0)delete st.bump[k]}
  st.coins.forEach(c=>c.t+=dt);st.coins=st.coins.filter(c=>c.t<.7);st.t+=dt}
@@ -70,24 +75,24 @@ function draw(){
  g.fillStyle=PINK;g.fillRect(cam-8,GY,W+16,22);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(cam-8,GY,W+16,22);
  g.lineWidth=2;g.globalAlpha=.35;for(let x=Math.floor(cam/40)*40;x<cam+W+40;x+=40){g.beginPath();g.moveTo(x+4,GY);g.lineTo(x+4,GY+22);g.stroke()}g.globalAlpha=1;
  S.forEach((s,i)=>{const cx=COL[i],hit=st.hit.has(i);
-  if(s.kind==='repo'||s.kind==='mile'){const w=s.kind==='mile'?40:30,by=74-(st.bump[i]?Math.sin(st.bump[i]/.25*Math.PI)*6:0);
-   box(cx-w/2,by,w,28,hit?PINK:YEL);txt(s.kind==='mile'?'★':(hit?'!':'?'),cx,by+21,15,'center');txt(s.label,cx,68,8.5,'center')}
+  if(s.kind==='repo'||s.kind==='mile'){const B=BLK.find(b=>b.i===i),w=B.w,by=B.top-(st.bump[i]?Math.sin(st.bump[i]/.25*Math.PI)*6:0);
+   box(cx-w/2,by,w,28,hit?PINK:YEL);txt(s.kind==='mile'?'★':(hit?'!':'?'),cx,by+21,15,'center');txt(s.label,cx,B.top-6,8.5,'center')}
   else if(s.kind==='start'){box(cx-22,84,44,22,CREAM);txt(s.label,cx,99,10,'center')}
   else if(s.kind==='pipe'){box(cx-20,118,40,11,YEL);box(cx-15,129,30,GY-129,YEL);txt(s.label,cx,111,8.5,'center')}
   else{g.strokeStyle=INK;g.lineWidth=3;g.beginPath();g.moveTo(cx,66);g.lineTo(cx,GY);g.stroke();g.fillStyle=YEL;g.beginPath();g.arc(cx,64,5,0,7);g.fill();g.stroke();
    const wv=1-.3*Math.abs(Math.sin(st.t*4));g.fillStyle=PINK;g.beginPath();g.moveTo(cx,70);g.lineTo(cx-28*wv,81);g.lineTo(cx,92);g.closePath();g.fill();g.lineWidth=2;g.stroke();txt(s.label,cx,56,8.5,'center')}
   g.fillStyle=hit?YEL:CREAM;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(cx,GY+11,4,0,7);g.fill();g.stroke()});
  st.coins.forEach(c=>{g.fillStyle=YEL;g.strokeStyle=INK;g.lineWidth=2;g.beginPath();g.arc(c.x,c.y-c.t*60,6,0,7);g.fill();g.stroke()});
- g.save();g.translate(st.x,st.y);g.scale(st.face,1);g.drawImage(sp,-18,-42);g.restore();
- g.restore();
+g.restore();
  // HUD
  let cm=0,rp=0;st.hit.forEach(i=>{cm+=S[i].cm;rp+=S[i].rp});
  g.fillStyle=YEL;g.fillRect(0,0,W,34);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,1.5,W-3,31);
  txt('STAGE '+String(st.cur).padStart(2,'0')+'/'+(N-1),14,22,11,'left');txt('REPOS x'+String(rp).padStart(2,'0'),W/2,22,11,'center');txt('COMMITS '+String(cm).padStart(4,'0'),W-14,22,11,'right');
+ g.save();g.translate(-cam,0);g.translate(st.x,st.y);g.scale(st.face,1);g.drawImage(sp,-18,-42);g.restore();
  // panel
  g.fillStyle=CREAM;g.fillRect(0,180,W,70);g.strokeStyle=INK;g.lineWidth=3;g.strokeRect(1.5,181.5,W-3,67);
  const s=S[st.cur];txt('▶ '+(s.date?s.date+' :: ':'')+s.title,14,206,11,'left');txt(s.detail,14,228,12.5,'left',false);
- if(!st.hit.has(1)&&st.cur===0)txt('Run →  then jump up under a block',W-14,243,10,'right');
+ if(!st.hit.has(1)&&st.cur===0)txt('Run →  jump onto the blocks',W-14,243,10,'right');
  if(st.won){g.fillStyle='rgba(26,26,26,.7)';g.fillRect(0,34,W,146);txt('COURSE CLEAR!',W/2,100,26,'center',true,YEL);txt('Press ENTER / tap to play again',W/2,130,12,'center',true,CREAM)}
 }
 function loop(n){const dt=Math.min((n-last)/1000,.05);last=n;step(dt);draw();requestAnimationFrame(loop)}
