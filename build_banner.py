@@ -2,7 +2,30 @@
 """Generate game.svg: self-playing, scrolling, looping Mario career run (no input)."""
 import html
 from pathlib import Path
-from mario_game import MARIO_SPRITE, PALETTE
+MARIO_SPRITE = [
+    "...RRRRR....",
+    "..RRRRRRRRR.",
+    "..BBBSSBS...",
+    ".BSBSSSBSSS.",
+    ".BSBBSSSBSSS",
+    ".BBSSSSBBBB.",
+    "...SSSSSSS..",
+    "..RRCRRR....",
+    ".RRRCRRRCR..",
+    "RRRRCCCCRRRR",
+    "SSRCYSYCRSS.",
+    "SSSCCCCCCSSS",
+    "..CCC..CCC..",
+    ".BBBB..BBBB.",
+]
+
+PALETTE = {
+    "R": "#E8857A",
+    "S": "#F5D87A",
+    "Y": "#F5D87A",
+    "B": "#1A1A1A",
+    "C": "#F2EDD7",
+}
 
 # (label, kind, date, title, detail, commits)  kind: start | repo | mile | pipe | flag
 S = [
